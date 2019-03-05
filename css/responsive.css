@@ -22,7 +22,8 @@
         line-height: 90px;
     }
 
-    .time, .move {
+    .time,
+    .move {
         font-size: 2.25em;
     }
 
@@ -50,11 +51,13 @@
         margin: 8px 0 8px 25px;
     }
 
-    .time, .move {
+    .time,
+    .move {
         font-size: 2em;
     }
 
-    .timer, .moves {
+    .timer,
+    .moves {
         margin-top: 11px;
     }
 
@@ -99,7 +102,8 @@
     .panTitle {
         text-transform: none;
     }
-    .time, .move {
+    .time,
+    .move {
         font-size: 1.5em;
     }
 
@@ -171,7 +175,8 @@
         margin: 5px 0 5px 10px;
     }
 
-    .time, .move {
+    .time,
+    .move {
         font-size: 1.4em;
     }
 
