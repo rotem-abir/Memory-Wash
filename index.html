@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="publisher" href="www.rotemabir.com">
+        <title>Memory Game</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kaushan+Script%7COpen+Sans">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </head>
+    <body>
+
+        <div class="container">
+
+            <header class="header">
+                <h1>Memory Wash</h1>
+                
+                <div class="panel">
+                    <div class="pan">
+                        <span class="panTitle reset">Spin</span>
+                        <div class="button reset">
+                             <i class="material-icons md-36 reset">restore</i>
+                        </div>
+                    </div>
+
+                    <div class="pan">
+                        <span class="panTitle pause">Pause</span>
+                        <div class="button pause">
+                            <i class="material-icons md-36 pause">cancel_presentation</i>
+                        </div>
+                    </div>
+
+                    <div class="panScore">
+                        <div class="timer">
+                              <span class="record count">06:59</span>
+                              <div class="time count">02:37</div>
+                        </div>
+
+                        <div class="bar">
+                            <span id="bar">|</span>
+                        </div>
+
+                        <div class="moves">
+                            <span class="record count">09</span>
+                            <div class="move count">10</div>
+                        </div>
+                    </div>
+
+                    <div class="pan temper">
+                        <span class="panTitle">Temp</span>
+
+                        <ul class="stars">
+                            <li class="star">30</li>
+                            <li class="star">40</li>
+                            <li class="star">50</li>
+                            <li class="star">60</li>
+                            <li class="star">90</li>
+                        </ul>
+
+                        <div class="rating">
+                            <i class="material-icons md-24">rotate_right</i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main>
+                <ul class="board">
+                    <li class="card">
+                        <img src="img/DoNotBleach.jpg" width="72" alt="Do Not Bleach" title="Do Not Bleach"><span class="meaning hide">Do Not Bleach</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/DoNotWash.jpg" width="72" alt="Do Not Wash" title="Do Not Wash"><span class="meaning hide">Do Not Wash</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/DryCleanDoNot.jpg" width="72" alt="Do Not Clean" title="Do Not Dry Clean"><span class="meaning hide">Do Not Dry Clean</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/DryCleanOnly.jpg" width="72" alt="Dry Clean Only" title="Dry Clean Only"><span class="meaning hide">Dry Clean Only</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/HandWashOnly.jpg" width="72" alt="Hand Wash Only" title="Hand Wash Only"><span class="meaning hide">Hand Wash Only</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/IronOnMedium.jpg" width="72" alt="Iron On Medium" title="Iron On Medium"><span class="meaning hide">Iron On Medium</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/TumbleDryDoNot.jpg" width="72" alt="Do Not Tumble Dry" title="Do Not Tumble Dry"><span class="meaning hide">Do Not Tumble Dry</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/TumbleDryOnHigh.jpg" width="72" alt="Tumble Dry On High" title="Tumble Dry On High"><span class="meaning hide">Tumble Dry On High</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/more/Bleach.jpg" width="72" alt="Bleach" title="Bleach"><span class="meaning hide">Bleach</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/more/GentleCycle.jpg" width="72" alt="Gentle Cycle" title="Gentle Cycle"><span class="meaning hide">Gentle Cycle</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/more/IronOnHigh.jpg" width="72" alt="Iron On High" title="Iron On High"><span class="meaning hide">Iron On High</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/more/IronOnLow.jpg" width="72" alt="Iron On Low" title="Iron On Low"><span class="meaning hide">Iron On Low</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/more/NoChlorineBleach.jpg" width="72" alt="No Chlorine Bleach" title="No Chlorine Bleach"><span class="meaning hide">No Chlorine Bleach</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/more/PermanentPress.jpg" width="72" alt="Permanent Press" title="Permanent Press"><span class="meaning hide">Permanent Press</span>
+                    </li>
+                    <li class="card">
+                            <img src="img/more/TumbleDryDelicate.jpg" width="72" alt="Tumble Dry Delicate" title="Tumble Dry Delicate"><span class="meaning hide">Tumble Dry Delicate</span>
+                    </li>
+                    <li class="card">
+                        <img src="img/more/TumbleDryOnLow.jpg" width="72" alt="Tumble Dry On Low" title="Tumble Dry On Low"><span class="meaning hide">Tumble Dry On Low</span>
+                    </li>
+                </ul>
+
+            </main>
+
+        </div> 
+
+        <script src="js/app.js"></script>
+    </body>
+</html>

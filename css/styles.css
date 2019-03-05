@@ -1,0 +1,247 @@
+body {
+
+}
+
+.container {
+    max-width: 780px;
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.header {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #ececec;
+    box-shadow:  inset 0 0 15px 2px #888888;
+}
+
+h1 {
+    font-size: 2.5em; 
+    margin: 15px 0 15px 40px;
+    font-family: 'Kaushan Script', 'Tahoma', cursive;
+}
+
+/*
+*   CONTORL panel
+*/
+
+.panel {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-align: center;
+    font-family: 'Open Sans', 'Tahoma', sans-serif;
+    padding-bottom: 26px;
+}
+
+.pan {
+    width: 17%;
+}
+
+.pan.temper {
+    width: 23%;
+}
+
+.panTitle {
+    font-size: 1.20em;
+    text-transform: uppercase;
+    margin: 10px 0 10px 0;
+}
+
+.reset, .pause {
+    cursor: pointer;
+}
+
+.button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: #465357 2px double;
+    background-color: whitesmoke;
+    box-shadow: 1px 1px 6px 1px #888888;
+}
+
+.material-icons.md-36 {
+    padding-top: 12px;
+    color: #b0b0b0;
+    font-size: 36px;
+}
+
+/*
+*   SCORE panel
+*/
+
+.panScore {
+    width: 38%;
+    height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: #858f90;
+    border-radius: 6px;
+    border: #465357 2px double;
+    box-shadow:  inset 5px 5px 20px 1px #668;
+}
+
+.record {
+    color: #a5e25b;
+    font-size: 1.2em;
+}
+
+.timer {
+    width: 55%;
+    margin-top: 6px;
+}
+
+.time, .move {
+    font-size: 3em;
+    color: #9ff50b;
+    margin: 0;
+}
+
+.moves {
+    width: 35%;
+    margin-top: 6px;
+}
+
+.bar {
+    width: 10%;
+    line-height: 100px;
+}
+
+#bar {
+    vertical-align: middle;
+    font-size: 3.6em;
+    color: #69797c;
+}
+
+/*
+*   RATING panel
+*/
+
+ul li {
+    display: inline;
+    list-style: none;
+}
+
+.stars {
+    margin: 0;
+    padding: 0;
+    word-spacing: 3px;
+}
+
+.star {
+    color: #b4b4b4;
+    font-size: 1em;
+}
+
+.starOn {
+    color: #eb7526;
+    font-weight: 600;
+}
+
+.rating {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: #465357 2px double;
+    background-color: #b1babb;
+}
+
+.material-icons.md-24 {
+    font-size: 2em;
+    padding-top: 4px;
+    color: #465357;  
+}
+
+/*
+*   BOARD game area
+*/
+
+main {
+    width: 100%;
+    background-color: #bababa;
+    border-radius: 5px;
+    box-shadow:  inset 0 0 10px 2px #888888;
+}
+
+.board {
+    width: 600px;
+    height: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: auto;
+    margin-left: auto;
+    /*margin-top: 0;*/
+    padding: 0;
+    /*background-color: red;*/
+}
+
+/* (0.1.0) */
+.card {
+    width: 22%; /*135px;*/
+    height: 22%; /*135px;*/
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e3e3e3;
+    box-shadow: 2px 3px 16px 1px #465357;
+    cursor: pointer;
+    position: relative;
+}
+
+/* (0.1.1) */
+li.closed {
+    background-color: #d6d4d4;
+}
+
+/* (0.2.0) */
+.card.pick {
+    background-color: #f6b0f6;
+    cursor: default;
+}
+
+/* (0.2.1) */
+li.card.solved {
+    background-color: #76b0f6;
+    cursor: default;
+}
+
+img {
+    width: 90%;
+    height: auto;
+    position:absolute;
+}
+
+.meaning {
+    font-family: 'Open Sans', 'Tahoma', sans-serif;
+    font-size: 1em;
+    font-weight: 900;
+    color: #21272e;
+    padding: 10px;
+    text-align: center;
+}
+
+.explain {
+    opacity: 0.1;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+img.cheat {
+    visibility: visible;
+    width: 40%;
+    height: auto;
+}
