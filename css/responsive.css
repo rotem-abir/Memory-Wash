@@ -1,0 +1,196 @@
+@media screen and (max-height: 860px) {
+    .board {
+        width: 500px;
+        height: 500px;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    h1 {
+        font-size: 2em;
+    }
+    
+    .panTitle {
+        font-size: 1em;
+    }
+
+    .panScore {
+        height: 90px;
+    }
+
+    .bar {
+        line-height: 90px;
+    }
+
+    .time, .move {
+        font-size: 2.25em;
+    }
+
+    #bar {
+        font-size: 3em;
+    }
+
+    .star {
+        font-size: 14px;
+    }
+
+    .board {
+        width: 500px;
+        height: 500px;
+    }
+
+    .card {
+        max-width: 112px;
+        max-height: 112px;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    h1 {
+        margin: 8px 0 8px 25px;
+    }
+
+    .time, .move {
+        font-size: 2em;
+    }
+
+    .timer, .moves {
+        margin-top: 11px;
+    }
+
+    .star {
+        font-size: 12px;
+    }
+
+    .stars {
+        word-spacing: 1px;
+    }
+
+    .board {
+        width: 400px;
+        height: 400px;
+    }
+
+    .card {
+        width: 90px;
+        height: 90px;
+    }
+    
+}
+
+/*
+*   Typical Mobile Phones
+*/
+
+@media screen and (max-width: 430px) {
+    h1 {
+        font-size: 1.4em;
+        margin: 8px 0 8px 15px;
+    }
+
+    .panel {
+        padding-bottom: 15px;
+    }
+
+    .pan {
+        width: 20%;
+    }
+
+    .panTitle {
+        text-transform: none;
+    }
+    .time, .move {
+        font-size: 1.5em;
+    }
+
+    .panScore {
+        width: 34%;
+        height: 75px;
+        padding-left: 5px;
+    }
+
+    .button {
+        width: 52px;
+        height: 52px;
+    }
+
+    .material-icons.md-36 {
+        padding-top: 8px;
+    }
+  
+    .record {
+        font-size: 0.85em;
+    }
+
+    .stars {
+        word-spacing: -1px;
+    }
+
+    .bar {
+        line-height: 65px;
+    }
+
+    #bar {
+        width: 4px;
+    }
+    
+    .material-icons.md-24 {
+        padding-top: 2px;
+    }
+
+    .rating {
+        width: 36px;
+        height: 36px;
+    }
+
+    ul {
+        font-size: 12px;
+    }
+
+    .board {
+        width: 320px;
+        height: 320px;
+    }
+
+    .card {
+        width: 72px;
+        height: 72px;
+    }
+}
+
+/*
+*   Old Mobile Devies
+*/
+
+@media screen and (max-width: 355px) {
+    body {
+        margin: 2px;
+    }
+    h1 {
+        font-size: 1.2em;
+        margin: 5px 0 5px 10px;
+    }
+
+    .time, .move {
+        font-size: 1.4em;
+    }
+
+    .panel {
+        padding-bottom: 10px;
+    }
+
+    .rating {
+        display: none;
+    }
+
+    .stars {
+        font-size: 1.2em;
+        font-weight: 500;
+        word-spacing: 4px;
+    }
+
+    .board {
+        width: 300px;
+        height: 300px;
+    }
+}
