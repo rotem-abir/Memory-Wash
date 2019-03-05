@@ -6,9 +6,7 @@ let speedEnd;
 */
 
 const cards = document.getElementsByClassName("card");
-
 const deck = [...cards];
-
 const stock = deck.map(function(card) {
     return card.innerHTML;
 });
@@ -47,7 +45,6 @@ function buildDeck(stock) {
 
 const score = Array.from(document.getElementsByClassName("count"));
 const stars = document.querySelectorAll(".star");
-
 const timeRecord = score[0];
 const time = score[1];
 const movesRecord = score[2];
@@ -55,7 +52,6 @@ const moves = score[3];
 
 let gameTime = "01:23";
 let gameMoves = "45";
-
 
 function scoreUpdate(){
     time.innerHTML = gameTime;
@@ -73,13 +69,10 @@ function scoreReset() {
 */
 
 let gameRate = 5;
-// temprature signs
-const tempSign = stars[0].parentElement.parentElement.lastElementChild.lastElementChild;
-// signs options
-const tempStock = ["money", "child_care", "sync_disabled","sync_problem", "sync", "whatshot"];
+const tempSign = stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
+const tempStock = ["money", "child_care", "sync_disabled","sync_problem", "sync", "whatshot"]; // temprature signs options
 
 function checkRating(rating) {
-
     if ((gameMoves === 11) || (gameMoves === 13) || (gameMoves === 16) || (gameMoves === 19)) {
         rating--;
         stars[rating].classList.toggle("starOn");
@@ -92,7 +85,6 @@ function checkRating(rating) {
 
 function starsReset() {
     gameRate = 5;
-
     for (const star of stars) {
         star.classList.remove("starOn");
     }
@@ -103,36 +95,27 @@ function starsReset() {
 */
 
 function timeFormat(seconds) {
-    // Time is 00:00 to 00:59
-    if (seconds < 60 ) {
-        // Time is between 0-9 (00:0X)
-        if (seconds < 10) {
+    if (seconds < 60 ) {             // Time is 00:00 to 00:59
+        if (seconds < 10) {          // Time is between 0-9 (00:0X)
             return `00:0${seconds.toString()}`;
         }
-        // Time is between 10-59 (00:XX)
-        else {
+        else {                      // Time is between 10-59 (00:XX)
             return `00:${seconds.toString()}`;
         }
     }
-    // Time is 01:00 to 09:99   
-    else if (seconds < 600) {
-        // Time is (0X:0X)
-        if (seconds%60 < 10) {
+    else if (seconds < 600) {       // Time is 01:00 to 09:99    
+        if (seconds%60 < 10) {      // Time is (0X:0X)
             return `0${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;   
         }
-        // Time is (0X:XX)
-        else {
+        else {                      // Time is (0X:XX)
             return `0${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
         }
     }
-     // Time is 10:00 - 99:99
-    else {
-        // Time is (XX:0X)
-        if (seconds%60 < 10) {
+    else {                          // Time is 10:00 - 99:99
+        if (seconds%60 < 10) {      // Time is (XX:0X)
             return `${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;
         }
-        // Time is (XX:XX)
-        else {
+        else {                      // Time is (XX:XX)
             return `${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
         }
     }
@@ -154,20 +137,17 @@ const timer = {
         scoreUpdate();
     },
     start: function() {
-        // run game timer (if not running already)
-        if (!this.running) {
+        if (!this.running) {                    // run game timer (if not running already)
             this.counter = setInterval(this.timeOn, this.interval);
             this.running = true;
         }
     },
     pause: function() {
-        // if the game is running, pause it
-        if (this.running) {
+        if (this.running) {                     // if the game is running, pause it
             clearInterval(this.counter);
             this.running = false;
         }
-        // if the game is paused, resume it
-        else if (seconds) {
+        else if (seconds) {                     // if the game is paused, resume it
             this.start();
         }
     },
@@ -278,7 +258,6 @@ const board = document.querySelector(".board");
 
 function explainListen (evt) {
     let isImg = evt.target;
-
     if ((isImg.nodeName === "IMG") && (!(timer.running))){
         isImg.classList.toggle("explain");
         isImg.nextSibling.classList.toggle("hide");
@@ -301,7 +280,6 @@ const explainCards = {
 */
 
 let delay = 1500;
-
 function cardsReset(delay) {
     picked = 0;
     remaining = 8;
@@ -365,10 +343,8 @@ function gameOver() {
 */
 
 let firstCard;
-
 function cardChecker(evt) {
     let checkCard = evt.target;
-
     if (checkCard.nodeName === "LI") {
         // If a card was clicked, start the Game
         if (gameTime === "00:00") {
@@ -406,16 +382,13 @@ function cardChecker(evt) {
 */
 
 const panel = document.querySelector("div.panel");
-
 panel.addEventListener('click', function(evt) {
     let checkClass = evt.target.classList;
-
     checkClass = [...checkClass];
-
-    for (let check of checkClass) {
+    for (let check of checkClass) {     // check what was clicked on the pannel
         if (check === "pause") {
             timer.pause();
-            if (!timer.running) {
+            if (!timer.running) {       // toggle explanations according to game run/pause
                 explainCards.show();
             }
             else {
@@ -424,12 +397,12 @@ panel.addEventListener('click', function(evt) {
         }
         else if (check === "reset"){
             resetGame();
-            if (best.moves === 999) {
+            if (best.moves === 999) {   // if it's the first game
                 timeRecord.innerHTML = "00:00";
                 movesRecord.innerHTML = "00";
             }
         }
-        else if (check === "stars") {
+        else if (check === "stars") {   // for mobile - equal to the button "c" . to clean the local memory
             cleanLocalRecord();
         }
     }
@@ -443,6 +416,7 @@ window.onkeyup = function(key) {
         cleanLocalRecord();
     }
 }
+
 /*
 *   PREFORMANCE test (code: 0.60~, gmae 1.35~)
 */
@@ -455,9 +429,7 @@ console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!"
 */
 
 board.addEventListener('click', cardChecker);
-
 explainCards.show();
-
 [best.time, best.moves] = readLoacalRecord();
 
 /*
@@ -472,45 +444,37 @@ const iddqd = {
     gouranga: function() {
         if (this.godmode === false) {
             this.godmode = true;
-            delay = 3000;
-            timer.interval = 1000;
-
-            this.moveRec = best.moves;
+            delay = 3000;               // make pre-game delay longer
+            timer.interval = 1000;      // turn seconds into minutes
+            this.moveRec = best.moves;  // keep records
             best.moves = 0;
             this.timeRec = best.time;
             best.time = 0;
             this.starRec = best.rate;
             best.rate = 6;
-
-            timeRecord.innerHTML = "BONUS!";
+            timeRecord.innerHTML = "BONUS!";    // change score display
             movesRecord.innerHTML = "☺";
             tempSign.textContent = "verified_user";
-
-            for (const star of stars) {
+            for (const star of stars) {        // twist rating
                 star.classList.toggle("starOn");
             }
-
-            for (const card of cards) {
+            for (const card of cards) {         // show cards
                 card.firstElementChild.classList.add("cheat"); 
             }
         }
-        else {
+        else {                          // bring everything back
             this.godmode = false;
             delay = 1500;
             timer.interval = 16.66;
-
             best.moves = this.moveRec;
             best.time = this.timeRec;
             best.rate = this.starRec;
-
             timeRecord.innerHTML = timeFormat(best.time);
             movesRecord.innerHTML = best.moves;
             tempSign.textContent = `${tempStock[gameRate]}`; 
-
             for (const star of stars) {
                 star.classList.toggle("starOn");
             }
-
             for (const card of cards) {
                 card.firstElementChild.classList.remove("cheat"); 
             }
