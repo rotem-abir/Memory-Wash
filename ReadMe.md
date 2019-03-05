@@ -53,7 +53,8 @@ timeFormat(seconds);
 best.time.moves.rate
     saveLocalRecord(time, moves);
         readLoacalRecord();
-            recordUpdate();	
+            cleanLocalRecord();
+                recordUpdate();	
 
 matchCards(a, b);
 explainListen(evt);
@@ -139,6 +140,11 @@ Stops and restarts the game timer.
 - Read the records from local memory
 - If not null: update and change high-score panel
 - If null, means it's the first game. Keep default values
+
+`cleanLocalRecord();`
+
+- Good guess. Cleaning local records
+- Bring game to initial state
 
 `recordUpdate();`
 

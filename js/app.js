@@ -536,7 +536,8 @@ timeFormat(seconds);
 best.time.moves.rate	
     saveLocalRecord(best.time, best.moves);
         readLoacalRecord();
-            recordUpdate();	
+            cleanLocalRecord();
+                recordUpdate();	
 
 matchCards(a, b);
 explainListen(evt);
