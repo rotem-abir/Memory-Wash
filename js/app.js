@@ -184,6 +184,7 @@ function readLoacalRecord() {
         moveRead = parseInt(moveRead);
         timeRecord.innerHTML = timeFormat(timeRead);
         movesRecord.innerHTML = moveRead;
+        scoreReset();
     }
     else {
         timeRead = 5940;
@@ -206,7 +207,7 @@ function recordUpdate() {
     if (gameRate > best.rate) {
         bestMsg[2] = `Fairly Clean! You're getting warmer.`
         if ((best.rate === 0 )&&(best.moves !== 999)) {                  // if it's a returning player
-            bestMsg = ["", "Good to have you back. Remember, for best results:", "Combine your wash with a good laundry detergent."];
+            bestMsg = ["", "Good to have you back. For best results:", "Combine wash with good laundry detergent."];
         }
     }
     if (seconds < best.time) {
@@ -325,9 +326,9 @@ function playAgain() {
 
 Time : ${gameTime} | Moves : ${gameMoves} | How clean were you: ${tempGreet[(gameRate-1)]}
 
-    ${bestMsg[0]}
-    ${bestMsg[1]}
-    ${bestMsg[2]} Spin again!`);
+${bestMsg[0]}
+${bestMsg[1]}
+${bestMsg[2]} Spin again!`);
 
     bestMsg = ["", "", ""];
 }
