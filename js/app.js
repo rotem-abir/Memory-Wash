@@ -200,11 +200,14 @@ function cleanLocalRecord() {
     best.time = 5940;
 }
 
-let bestMsg = ["", "", ""]; // TimeMsg, MovesMsg, RateMsg
+let bestMsg = ["", "Good to have you back.", ""]; // TimeMsg, MovesMsg, RateMsg
 
 function recordUpdate() {
     if (gameRate > best.rate) {
         bestMsg[2] = `Fairly Clean! You're getting warmer.`
+        if ((best.rate === 0 )&&(best.moves !== 999)) {                  // if it's a returning player
+            bestMsg = ["", "Good to have you back. Remember, for best results:", "Combine your wash with a good laundry detergent."];
+        }
     }
     if (seconds < best.time) {
         bestMsg[0] = `NEW BEST TIME! | (Record broke: ${timeFormat(best.time)})`;
@@ -214,7 +217,7 @@ function recordUpdate() {
     }
     if (gameMoves < best.moves) {
         bestMsg[1] = `GREAT MOVES! | (Record broke: ${best.moves})`;
-        if ((best.moves === 999)||(best.rate === 0)) { // if its the first time ever played the game
+        if (best.moves === 999) { // if its the first time ever played the game
             bestMsg = ["You made new time and moves records.", "To clean these records press C.", "Otherwise, get cleaner:"];
         }
         best.moves = gameMoves;
@@ -335,7 +338,10 @@ function gameOver() {
     recordUpdate();
     seconds = 0; // prevets the pause button to work
     explainCards.show();
-    setTimeout(playAgain , 1500);
+    setTimeout(playAgain , 1000);
+    if ((best.rate === 5)&&(best.moves < 10)) { // opens bonus level
+        iddqd.gouranga();
+    }
 }
 
 /*
