@@ -1,13 +1,11 @@
-@media screen and (max-height: 860px) {
-    .board {
-        width: 500px;
-        height: 500px;
-    }
-}
+/*
+*   Medium res desktop - 1366*768 / 1280*768 / 1280*1024
+*/
 
-@media screen and (max-width: 630px) {
+@media screen and (max-width: 630px), (max-height: 860px) {
     h1 {
         font-size: 2em;
+        margin: 8px 0 8px 25px;
     }
     
     .panTitle {
@@ -15,7 +13,7 @@
     }
 
     .panScore {
-        height: 90px;
+        height: 85px;
     }
 
     .bar {
@@ -24,7 +22,7 @@
 
     .time,
     .move {
-        font-size: 2.25em;
+        font-size: 2em;
     }
 
     #bar {
@@ -32,7 +30,11 @@
     }
 
     .star {
-        font-size: 14px;
+        font-size: 13px;
+    }
+
+    .rating {
+        margin-top: 4px;
     }
 
     .board {
@@ -46,23 +48,21 @@
     }
 }
 
-@media screen and (max-width: 530px) {
-    h1 {
-        margin: 8px 0 8px 25px;
-    }
+/*
+*   Tablet or Low res desktop - 1280*720
+*/
 
-    .time,
-    .move {
-        font-size: 2em;
+@media screen and (max-width: 530px), (max-height: 725px) {
+    .container {
+        max-width: 630px;
+    }
+    .panel {
+        padding-bottom: 15px;
     }
 
     .timer,
     .moves {
         margin-top: 11px;
-    }
-
-    .star {
-        font-size: 12px;
     }
 
     .stars {
@@ -85,23 +85,19 @@
 *   Typical Mobile Phones
 */
 
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 430px), (max-height: 610px)  {
+    .container {
+        max-width: 530px;
+    }
     h1 {
         font-size: 1.4em;
         margin: 8px 0 8px 15px;
     }
 
-    .panel {
-        padding-bottom: 15px;
-    }
-
     .pan {
         width: 20%;
     }
-
-    .panTitle {
-        text-transform: none;
-    }
+    
     .time,
     .move {
         font-size: 1.5em;
@@ -130,6 +126,10 @@
         word-spacing: -1px;
     }
 
+    .star {
+        font-size: 12px;
+    }
+
     .bar {
         line-height: 65px;
     }
@@ -143,6 +143,7 @@
     }
 
     .rating {
+        margin-top: 0;
         width: 36px;
         height: 36px;
     }
@@ -166,7 +167,7 @@
 *   Old Mobile Devies
 */
 
-@media screen and (max-width: 355px) {
+@media screen and (max-width: 355px), (max-height: 500px) {
     body {
         margin: 2px;
     }
@@ -182,6 +183,10 @@
 
     .panel {
         padding-bottom: 10px;
+    }
+
+    .panTitle {
+        text-transform: none;
     }
 
     .rating {

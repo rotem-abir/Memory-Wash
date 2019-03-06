@@ -97,7 +97,7 @@ h1 {
 
 .time,
 .move {
-    font-size: 3em;
+    font-size: 2.7em;
     color: #9ff50b;
     margin: 0;
 }
@@ -147,16 +147,17 @@ ul li {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    margin-top: 7px;
     margin-left: auto;
     margin-right: auto;
     border: #465357 2px double;
-    background-color: #b1babb;
+    background-color: #858f90;
 }
 
 .material-icons.md-24 {
     font-size: 2em;
     padding-top: 4px;
-    color: #465357;  
+    color: #9ff50b;  
 }
 
 /*
