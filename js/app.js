@@ -201,30 +201,47 @@ function cleanLocalRecord() {
     best.time = 5940;
 }
 
-let bestMsg = ["", "Good to have you back.", ""]; // TimeMsg, MovesMsg, RateMsg
+
+/*
+*   RECORDS updater
+*/
+
+const endScreen = document.querySelector(".endScreen"); // the game-over popup screen
+const newBest = endScreen.querySelectorAll(".newBest"); // "new best" elemnts on the popup screen
+const endMsg = endScreen.firstElementChild.lastElementChild.firstElementChild; // the last message on the popup screen
 
 function recordUpdate() {
     if (gameRate > best.rate) {
-        bestMsg[2] = `Fairly Clean! You're getting warmer.`
+        endMsg.innerText = `Fairly Clean! You're getting warmer.`
         if ((best.rate === 0 )&&(best.moves !== 999)) {                  // if it's a returning player
-            bestMsg = ["", "Good to have you back. For best results:", "Combine wash with good laundry detergent."];
+            endMsg.innerHTML = `Good to see you again! Remeber, for best results always combine your wash with a good laundry detergent.`;
         }
     }
     if (seconds < best.time) {
-        bestMsg[0] = `NEW BEST TIME! | (Record broke: ${timeFormat(best.time)})`;
+        newBest[0].classList.remove("hideEl"); // show new record
+        newBest[0].lastElementChild.innerHTML = `(Record broke: ${timeFormat(best.time)})` // old time record
         best.time = seconds;
         timeRecord.innerHTML = timeFormat(best.time);
         saveLocalRecord(best.time, best.moves);
     }
+    else {
+        newBest[0].classList.add("hideEl"); // no time record broke
+    }
     if (gameMoves < best.moves) {
-        bestMsg[1] = `GREAT MOVES! | (Record broke: ${best.moves})`;
+        newBest[1].classList.remove("hideEl"); // show new record
+        newBest[1].lastElementChild.innerHTML = `(Record broke: ${best.moves})`; // old move record
         if (best.moves === 999) { // if its the first time ever played the game
-            bestMsg = ["You made new time and moves records.", "To clean these records press C.", "Otherwise, get cleaner:"];
+            endMsg.innerText = `Less mistakes will grant you higher wash temprature = more stars. To clean your records press C on the keyboard. Otherwise:`;
+            newBest[0].lastElementChild.innerHTML = "Your record will be saved!";
+            newBest[1].lastElementChild.innerHTML = "Less moves = you get clenaer!";
         }
         best.moves = gameMoves;
         movesRecord.innerHTML = best.moves;
         saveLocalRecord(best.time, best.moves);
     } 
+    else {
+        newBest[1].classList.add("hideEl"); // no moves record broke
+    }
     best.rate = gameRate;
 }
 
@@ -307,31 +324,54 @@ function resetGame() {
     timer.reset();
     explainCards.hide();
     cardsReset(delay);
+    endMsg.innerText = "";
+}
+
+/*
+*   POPUP screen
+*/
+
+const endScore = endScreen.querySelectorAll(".endScore");
+const endTemp = endScreen.querySelectorAll(".endTemp")
+const buttonSpin = endMsg.nextElementSibling;
+const buttonLearn = buttonSpin.nextElementSibling;
+
+const tempGreet = [
+    ["30°C.", "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"],
+    ["40°C.", "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"],
+    ["50°C.", "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."],
+    ["60°C.", "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."],
+    ["90°C. Well done!", "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."]
+];
+
+function popupWin() {
+    endScreen.classList.toggle("hideEl")
+}
+
+function playAgain() {
+    endScore[0].innerHTML = gameTime; // Game Time
+    endScore[1].innerHTML = gameMoves; // Game Moves 
+    endTemp[0].innerText = tempGreet[(gameRate-1)][0];
+    endTemp[1].innerText = tempGreet[(gameRate-1)][1];
+
+    endTemp[2].textContent = "";            // create amount of stars
+    for (let i = 0; i < gameRate; i++){
+        endTemp[2].textContent += "🌟 ";
+    }
+    popupWin();   // shows the pop up
+    buttonSpin.onclick = function(){
+        popupWin();
+        resetGame();
+    }
+    buttonLearn.onclick = function(){
+        popupWin();
+        explainCards.show();
+    }
 }
 
 /*
 *   END game
 */
-
-const tempGreet = [
-    "30°C.\nThis is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?",
-    "40°C.\nGood for most everday items. Very common, quiet normal.\nAre you normal?",
-    "50°C.\nThis wash is suitable for polyester/cotton mixtures and viscose.\nOh, and nylon.",
-    "60°C.\nLike underwear, towels and household linen.\nSome bacterial spores and viruses are resistant to this washing setting.",
-    "90°C. Well done!\nMost washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."
-];
-
-function playAgain() {
-    window.alert(`- NICE WASH! -
-
-Time : ${gameTime} | Moves : ${gameMoves} | How clean were you: ${tempGreet[(gameRate-1)]}
-
-${bestMsg[0]}
-${bestMsg[1]}
-${bestMsg[2]} Spin again!`);
-
-    bestMsg = ["", "", ""];
-}
 
 function gameOver() {
     scoreUpdate();
@@ -421,6 +461,9 @@ window.onkeyup = function(key) {
     }
     if ((key.key == "c") || (key.key == "C")) {
         cleanLocalRecord();
+    }
+    if ((key.key == "k") || (key.key == "K")) {
+        endScreen.classList.toggle("hideEl")
     }
 }
 

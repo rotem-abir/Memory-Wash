@@ -34,7 +34,7 @@
 
                     <div class="panScore">
                         <div class="timer">
-                              <span class="record count">06:59</span>
+                              <span class="record count">00:00</span>
                               <div class="time count">02:37</div>
                         </div>
 
@@ -43,8 +43,8 @@
                         </div>
 
                         <div class="moves">
-                            <span class="record count">09</span>
-                            <div class="move count">11</div>
+                            <span class="record count">00</span>
+                            <div class="move count">09</div>
                         </div>
                     </div>
 
@@ -123,6 +123,36 @@
         <audio id="soundFx" controls>
                 <source src="sound/sfx/laundry.mp3" type="audio/mpeg">Your browser doesn't support the laundry sound :(
         </audio>
+
+        <div class="endScreen hideEl">
+            <div class="endContainer">
+                <h2>- NICE WASH! -</h2>
+                
+                <h3>Time: <span class="endScore">10.03</span> | Moves: <span class="endScore">2019</span></h3>
+
+                <div class="newBest">
+                    <h4>NEW BEST TIME!</h4>
+                    <p>(Record broke: <span class="oldBest">06:59</span>)</p>
+                </div>
+
+                <div class="newBest">
+                    <h4>GREAT MOVES!</h4>
+                    <p>(Record broke: <span class="oldBest">09</span>)</p>
+                </div>
+
+                <div class="endClean">
+                    <h3>How clean were you: <span class="endTemp">100°C!<span></h3>
+                    <p class="endTemp">So nice!<br>Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items.</p>
+                    <div class="endTemp">💫 💫 💫 💫 💫</div>
+                </div>
+
+                <div class=endMsg>
+                    <p>Design & Develop: Rotem Abir.</p>
+                    <button name="spinAgain" type="button">SPIN AGAIN!</button>
+                    <button name="learnSym" type="button">LEARN SYMBOLS</button>
+                </div>
+            </div>
+        </div>
         
         <script src="js/app.js"></script>
     </body>

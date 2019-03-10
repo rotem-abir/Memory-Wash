@@ -46,6 +46,10 @@
         max-width: 112px;
         max-height: 112px;
     }
+
+    #soundFx {
+        display: none;
+    }   
 }
 
 /*
@@ -77,8 +81,12 @@
     .card {
         width: 90px;
         height: 90px;
+    } 
+
+    .endContainer {
+        margin: 10px;
+        padding: 30px 30px;
     }
-    
 }
 
 /*
@@ -161,6 +169,29 @@
         width: 72px;
         height: 72px;
     }
+
+    /* POP UP */
+
+    .endContainer {
+        margin: 10px;
+        padding: 20px 20px;
+    }
+
+    h4 {
+        font-size: 1.1em;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .endMsg {
+        justify-content: center;
+    }
+
+    button {
+        width: 66%;
+    }
 }
 
 /*
@@ -171,6 +202,7 @@
     body {
         margin: 2px;
     }
+
     h1 {
         font-size: 1.2em;
         margin: 5px 0 5px 10px;
@@ -203,4 +235,26 @@
         width: 300px;
         height: 300px;
     }
+
+    .endContainer {
+        margin: 10px;
+        padding: 10px 10px;
+    }
+
+    h4 {
+        font-size: 1em;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    .endMsg {
+        justify-content: space-between;
+    }
+
+    button {
+        width: 45%;
+    }
+
 }
