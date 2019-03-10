@@ -1,5 +1,5 @@
 .container {
-    max-width: 780px;
+    max-width: 720px;
     display: flex;
     flex-direction: column;
     margin-right: auto;
@@ -10,7 +10,7 @@
     width: 100%;
     border-radius: 8px;
     background-color: #ececec;
-    box-shadow:  inset 0 0 15px 2px #888;
+    box-shadow: inset 0 0 15px 2px #888;
 }
 
 h1 {
@@ -241,4 +241,85 @@ img.cheat {
     visibility: visible;
     width: 40%;
     height: auto;
+}
+
+/*
+*   GAME over
+*/
+
+.endScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #FFBBF8 0%, rgba(255, 255, 255, 0) 100%), rgba(118, 176, 246, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.endContainer {
+    height: 90%;
+    width: 90%;
+    max-height: 520px;
+    max-width: 500px;
+    border-radius: 9px;
+    padding: 40px 40px;
+    background-color:#FFE9FD;
+    font-family: 'Open Sans', 'Tahoma', sans-serif;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+h2, h3, h4 {
+    width: 100%;
+    margin: 0;
+    padding-top: 20px;
+}
+
+h4 {
+    font-size: 1.4em;
+    font-weight: 900;
+    color: #ec25d2;    
+}
+
+.newBest {
+    padding-top: 10px;
+    width: 50%;
+    margin: 0;
+}
+
+.hideEl {
+    display: none;
+}
+
+p {
+    padding-top: 5px;
+    width: 100%;
+    margin: 0;
+    font-weight: 100;
+}
+
+div.endTemp {
+    margin-top: 10px;
+    font-size: 2em;
+}
+
+.endMsg {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+button {
+    margin-top: 15px;
+    height: 48px;
+    width: 170px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #9b17a7;
 }

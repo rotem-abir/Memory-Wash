@@ -150,9 +150,10 @@ Stops and restarts the game timer.
 
 - Updates records in the high-score panel
 - Saves records on local memory
-- Upadtes the "star" number in the tempratue panel
+- Greet the player if he preformed better than his last round
 - Sends a "record broke" message to the congratulations popup
 - Sends a special greeting if the game was never played
+- Sends a special greeting for returning players
 
 `matchCards(a, b);`
 
@@ -185,8 +186,9 @@ Remove explanation (in-game)
 
 `playAgain();`
 
-- Congratulations Popup
-- "OK" to play again
+- Showing congratulations Popup
+- Upadtes the "stars" in the popup according the performances
+- Enables to click the buttons - another round or learning the laundry symbols
   
 `gameOver();`
 - Updates score and record
@@ -213,6 +215,7 @@ Remove explanation (in-game)
   |:---|:---|
   | C | Clean the records from game and memory |
   | G | Toggle "Bonus Level" / Cheat view |
+  | K | Toggle "Popup screen" / Credits view |
 
 `gouranga();`
 
