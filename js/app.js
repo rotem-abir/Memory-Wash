@@ -55,52 +55,61 @@ stock = model.deckData
 shuffle() = vm.shuffleDeck()
 buildDeck() = vm.buildDeck()
 
+score = view.score
+stars = view.stars
+timeRecord = view.timeRecord
+time = view.time
+movesRecord = view.movesRecord
+moves = view.moves
+gameTime = vm.gameTime
+gameMoves = vm.gameMoves
+scoreUpdate = view.updatePanel()
+scoreReset = vm.scoreReset()
 *
 *
 *
 */
-
 
 
 /*
 *   SCORE panel
 */
 
-const score = Array.from(document.getElementsByClassName("count"));
-const stars = document.querySelectorAll(".star");
-const timeRecord = score[0];
-const time = score[1];
-const movesRecord = score[2];
-const moves = score[3];
+// const score = Array.from(document.getElementsByClassName("count"));
+// const stars = document.querySelectorAll(".star");
+// const timeRecord = score[0];
+// const time = score[1];
+// const movesRecord = score[2];
+// const moves = score[3];
 
-let gameTime = "01:23";
-let gameMoves = "45";
+// let gameTime = "01:23";
+// let gameMoves = "45";
 
-function scoreUpdate(){
-    time.innerHTML = gameTime;
-    moves.innerHTML = gameMoves;
-}
+// function scoreUpdate(){
+//     time.innerHTML = gameTime;
+//     moves.innerHTML = gameMoves;
+// }
 
-function scoreReset() {
-    gameTime = "00:00";
-    gameMoves = "00";
-    scoreUpdate();
-}
+// function scoreReset() {
+//     gameTime = "00:00";
+//     gameMoves = "00";
+//     scoreUpdate();
+// }
 
 /*
 *   RATING system ("STARS")
 */
 
 let gameRate = 5;
-const tempSign = stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
+const tempSign = view.stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
 const tempStock = ["money", "child_care", "sync_disabled","sync_problem", "sync", "whatshot"]; // temprature signs options
 
 function checkRating(rating) {
-    if ((gameMoves === 11) || (gameMoves === 13) || (gameMoves === 16) || (gameMoves === 19)) {
+    if ((vm.gameMoves === 11) || (vm.gameMoves === 13) || (vm.gameMoves === 16) || (vm.gameMoves === 19)) {
         rating--;
-        stars[rating].classList.toggle("starOn");
+        view.stars[rating].classList.toggle("starOn");
         rating--;
-        stars[rating].classList.toggle("starOn");
+        view.stars[rating].classList.toggle("starOn");
         gameRate--;
         tempSign.textContent = `${tempStock[(gameRate)]}`;    
     }
@@ -108,7 +117,7 @@ function checkRating(rating) {
 
 function starsReset() {
     gameRate = 5;
-    for (const star of stars) {
+    for (const star of view.stars) {
         star.classList.remove("starOn");
     }
 }
@@ -156,8 +165,8 @@ const timer = {
     interval: 17, // seconds based on 1000/60, to imitate time foramt of launry machine. For "minutes:seocnds" display, use 1000
     timeOn: function() {
         seconds++;
-        gameTime = timeFormat(seconds);
-        scoreUpdate();
+        vm.gameTime = timeFormat(seconds);
+        view.updatePanel();
     },
     start: function() {
         if (!this.running) {                    // run game timer (if not running already)
@@ -205,9 +214,9 @@ function readLoacalRecord() {
     if (timeRead !== null) { // checks if its not the first game ever{
         timeRead = parseInt(timeRead);
         moveRead = parseInt(moveRead);
-        timeRecord.innerHTML = timeFormat(timeRead);
-        movesRecord.innerHTML = moveRead;
-        scoreReset();
+        view.timeRecord.innerHTML = timeFormat(timeRead);
+        view.movesRecord.innerHTML = moveRead;
+        vm.scoreReset();
     }
     else {
         timeRead = 5940;
@@ -218,8 +227,8 @@ function readLoacalRecord() {
 
 function cleanLocalRecord() {
     localStorage.clear();
-    timeRecord.innerHTML = "00:00";
-    movesRecord.innerHTML = "00";
+    view.timeRecord.innerHTML = "00:00";
+    view.movesRecord.innerHTML = "00";
     best.moves = 999;
     best.time = 5940;
 }
@@ -244,13 +253,13 @@ function recordUpdate() {
         newBest[0].classList.remove("hideEl"); // show new record
         newBest[0].lastElementChild.innerHTML = `(Record broke: ${timeFormat(best.time)})` // old time record
         best.time = seconds;
-        timeRecord.innerHTML = timeFormat(best.time);
+        view.timeRecord.innerHTML = timeFormat(best.time);
         saveLocalRecord(best.time, best.moves);
     }
     else {
         newBest[0].classList.add("hideEl"); // no time record broke
     }
-    if (gameMoves < best.moves) {
+    if (vm.gameMoves < best.moves) {
         newBest[1].classList.remove("hideEl"); // show new record
         newBest[1].lastElementChild.innerHTML = `(Record broke: ${best.moves})`; // old move record
         if (best.moves === 999) { // if its the first time ever played the game
@@ -258,8 +267,8 @@ function recordUpdate() {
             newBest[0].lastElementChild.innerHTML = "Your record will be saved!";
             newBest[1].lastElementChild.innerHTML = "Less moves = you get clenaer!";
         }
-        best.moves = gameMoves;
-        movesRecord.innerHTML = best.moves;
+        best.moves = vm.gameMoves;
+        view.movesRecord.innerHTML = best.moves;
         saveLocalRecord(best.time, best.moves);
     } 
     else {
@@ -328,12 +337,12 @@ function cardsReset(delay) {
     picked = 0;
     remaining = 8;
 
-    for (const card of cards) {
+    for (const card of vm.cards) {
         card.classList.remove("pick", "solved", "closed");
         card.firstElementChild.classList.remove("hide");
     }
     setTimeout(function() {
-        for (const card of cards) {
+        for (const card of vm.cards) {
             card.classList.add("closed");
             card.firstElementChild.classList.add("hide");
         }
@@ -341,8 +350,8 @@ function cardsReset(delay) {
 }
 
 function resetGame() {
-    vm.init();
-    scoreReset();
+    vm.buildDeck(model.deckData);
+    vm.scoreReset();
     starsReset();
     timer.reset();
     explainCards.hide();
@@ -372,8 +381,8 @@ function popupWin() {
 }
 
 function playAgain() {
-    endScore[0].innerHTML = gameTime; // Game Time
-    endScore[1].innerHTML = gameMoves; // Game Moves 
+    endScore[0].innerHTML = vm.gameTime; // Game Time
+    endScore[1].innerHTML = vm.gameMoves; // Game Moves 
     endTemp[0].innerText = tempGreet[(gameRate-1)][0];
     endTemp[1].innerText = tempGreet[(gameRate-1)][1];
 
@@ -397,7 +406,7 @@ function playAgain() {
 */
 
 function gameOver() {
-    scoreUpdate();
+    view.updatePanel();
     timer.pause();
     recordUpdate();
     seconds = 0; // prevets the pause button to work
@@ -417,9 +426,9 @@ function cardChecker(evt) {
     let checkCard = evt.target;
     if (checkCard.nodeName === "LI") {
         // If a card was clicked, start the Game
-        if (gameTime === "00:00") {
+        if (vm.gameTime === "00:00") {
             timer.start();
-            stars[4].classList.toggle("starOn");
+            view.stars[4].classList.toggle("starOn");
             tempSign.textContent = `${tempStock[(gameRate)]}`;   
         }
         //if the card is not already picked or solved, and if the game is running aka not paused
@@ -434,7 +443,7 @@ function cardChecker(evt) {
             // if it's the second card
             else if (picked === 1) {
                 picked = 2;
-                gameMoves++;
+                vm.gameMoves++;
                 checkCard.classList.add("pick");
                 checkCard.firstElementChild.classList.remove("hide");
                 matchCards(firstCard, checkCard);
@@ -468,8 +477,8 @@ panel.addEventListener('click', function(evt) {
         else if (check === "reset"){
             resetGame();
             if (best.moves === 999) {   // if it's the first game
-                timeRecord.innerHTML = "00:00";
-                movesRecord.innerHTML = "00";
+                view.timeRecord.innerHTML = "00:00";
+                view.movesRecord.innerHTML = "00";
             }
         }
         else if (check === "stars") {   // for mobile - equal to the button "c" . to clean the local memory
@@ -525,8 +534,8 @@ const iddqd = {
             best.time = 0;
             this.starRec = best.rate;
             best.rate = 6;
-            timeRecord.innerHTML = "BONUS!";    // change score display
-            movesRecord.innerHTML = "☺";
+            view.timeRecord.innerHTML = "BONUS!";    // change score display
+            view.movesRecord.innerHTML = "☺";
             tempSign.textContent = "verified_user";
             for (const star of stars) {        // twist rating
                 star.classList.toggle("starOn");
@@ -542,8 +551,8 @@ const iddqd = {
             best.moves = this.moveRec;
             best.time = this.timeRec;
             best.rate = this.starRec;
-            timeRecord.innerHTML = timeFormat(best.time);
-            movesRecord.innerHTML = best.moves;
+            view.timeRecord.innerHTML = timeFormat(best.time);
+            view.movesRecord.innerHTML = best.moves;
             tempSign.textContent = `${tempStock[gameRate]}`; 
             for (const star of stars) {
                 star.classList.toggle("starOn");

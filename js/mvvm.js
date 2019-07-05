@@ -15,19 +15,20 @@ const model = {
     },
     clean: function() {
 
-    }
+    },
   },
 
-  reset: function() {
+  cleanRecord: function() {
     this.time = 0;
-    this.stars = 5;
+    this.stars = 0;
     this.moves = 0;
   },
 
   init: function() {
-    this.reset();
     // temporary get data
-    this.deckData = vm.getDeck();
+    this.deckData = vm.deck.map(function(card) {
+        return card.innerHTML;
+    });
     // return '/data/data.json';
   }
 
@@ -35,12 +36,14 @@ const model = {
 
 
 const vm = {
-  getDeck: function() {
+  init: function() {
     this.cards = document.getElementsByClassName("card");
-    this.deck = [...cards];
-    return deck.map(function(card) {
-        return card.innerHTML;
-    });
+    this.deck = [...this.cards];
+    model.init();
+    //this.buildDeck(model.deckData);
+    //this.gameTime = "01:23";
+    //this.gameMoves = "45";
+    view.init();
   },
 
   shuffleDeck: function(array) {
@@ -58,8 +61,8 @@ const vm = {
     let i,
         m = 8,
         pairsStock = [];
-    pairsDeck.length = 16;  
-    for (i = 0; i < m; i++) {
+    pairsStock.length = 16;
+    for (i = 0; i < 8; i++) {
         pairsStock[i] = stock[i];
         pairsStock[m] = stock[i];
         m++;
@@ -67,35 +70,40 @@ const vm = {
     pairsStock = this.shuffleDeck(pairsStock);
     view.updateDeck(pairsStock);
   },
-  
-  updateScore: function() {
 
+  scoreReset: function() {
+    this.gameTime = "00:00";
+    this.gameMoves = "00";
+    view.updatePanel();
   },
-  updateTime: function() {
 
-  },
-  time: '',
-  stars: 5,
-  moves: 0,
   timer: {
 
-  },
-
-  init: function {
-    this.buildDeck(model.deckData);
-  },
+  }
 
 };
 
+const view = {  
+  init: function() {
+    this.score = Array.from(document.getElementsByClassName("count"));
+    this.stars = document.querySelectorAll(".star");
+    this.timeRecord = this.score[0];
+    this.time = this.score[1];
+    this.movesRecord = this.score[2];
+    this.moves = this.score[3];
+  },
 
-const view = {
   updateDeck: function(pairsDeck) {
     for (let i = 0; i < 16; i++) {
       vm.deck[i].innerHTML = pairsDeck[i];
     }
   },
-  
-  init: function() {
 
-  },
+  updatePanel: function() {
+    this.time.innerHTML = vm.gameTime;
+    this.moves.innerHTML = vm.gameMoves;
+  }
+
 };
+
+vm.init();
