@@ -1,3 +1,6 @@
+'use strict';
+var o = { p: 1, p: 2 };
+
 let speedBegin = performance.now();
 let speedEnd;
 
