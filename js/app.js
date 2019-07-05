@@ -8,39 +8,59 @@ let speedEnd;
 *   SHUFFLE deck
 */
 
-const cards = document.getElementsByClassName("card");
-const deck = [...cards];
-const stock = deck.map(function(card) {
-    return card.innerHTML;
-});
+// const cards = document.getElementsByClassName("card");
+// const deck = [...cards];
+// const stock = deck.map(function(card) {
+//     return card.innerHTML;
+// });
 
-function shuffle(array) {
-    let m = array.length, t, i;
-    // While there remain elements to shuffle…
-    while (m) {
-      // Pick a remaining element…
-      i = Math.floor(Math.random() * m--);
-      // And swap it with the current element.
-      t = array[m];
-      array[m] = array[i];
-      array[i] = t;
-    }
-}
+// function shuffle(array) {
+//     let m = array.length, t, i;
+//     // While there remain elements to shuffle…
+//     while (m) {
+//       // Pick a remaining element…
+//       i = Math.floor(Math.random() * m--);
+//       // And swap it with the current element.
+//       t = array[m];
+//       array[m] = array[i];
+//       array[i] = t;
+//     }
+// }
 
-function buildDeck(stock) {
-    let i, m = 8, pairsDeck = [];
-    shuffle(stock);     // shuffle stock and build a new deck with pairs
-    pairsDeck.length = 16;     
-    for (i = 0; i < 8; i++) {
-        pairsDeck[i] = stock[i];
-        pairsDeck[m] = stock[i];
-        m++;
-    }
-    shuffle(pairsDeck);     // shuffle new deck and update the DOM
-    for (i = 0; i < 16; i++) {
-        deck[i].innerHTML = pairsDeck[i];
-    }
-}
+// function buildDeck(stock) {
+//     let i, m = 8, pairsDeck = [];
+//     shuffle(stock);     // shuffle stock and build a new deck with pairs
+//     pairsDeck.length = 16;     
+//     for (i = 0; i < 8; i++) {
+//         pairsDeck[i] = stock[i];
+//         pairsDeck[m] = stock[i];
+//         m++;
+//     }
+//     shuffle(pairsDeck);     // shuffle new deck and update the DOM
+//     for (i = 0; i < 16; i++) {
+//         deck[i].innerHTML = pairsDeck[i];
+//     }
+// }
+
+
+
+/*
+*
+*
+*
+
+cards = vm.cards
+deck = vm.deck
+stock = model.deckData
+shuffle() = vm.shuffleDeck()
+buildDeck() = vm.buildDeck()
+
+*
+*
+*
+*/
+
+
 
 /*
 *   SCORE panel
@@ -321,7 +341,7 @@ function cardsReset(delay) {
 }
 
 function resetGame() {
-    buildDeck(stock);
+    vm.init();
     scoreReset();
     starsReset();
     timer.reset();
