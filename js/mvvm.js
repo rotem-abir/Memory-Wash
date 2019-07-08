@@ -5,6 +5,14 @@ const model = {
     stars: 0,
     moves: 0,
   },
+  tempStock: [ // temprature signs options
+    "money",
+    "child_care",
+    "sync_disabled",
+    "sync_problem",
+    "sync",
+    "whatshot"
+  ],
 
   localStorage: {
     save: function() {
@@ -40,9 +48,6 @@ const vm = {
     this.cards = document.getElementsByClassName("card");
     this.deck = [...this.cards];
     model.init();
-    //this.buildDeck(model.deckData);
-    //this.gameTime = "01:23";
-    //this.gameMoves = "45";
     view.init();
   },
 
@@ -77,9 +82,74 @@ const vm = {
     view.updatePanel();
   },
 
-  timer: {
+  checkRating: function (rating) {
+    if ((vm.gameMoves === 11) || (vm.gameMoves === 13) || (vm.gameMoves === 16) || (vm.gameMoves === 19)) {
+        rating--;
+        view.stars[rating].classList.toggle("starOn");
+        rating--;
+        view.stars[rating].classList.toggle("starOn");
+        view.gameRate--;
+        view.tempSign.textContent = `${model.tempStock[(view.gameRate)]}`;    
+    }
+  },
 
-  }
+  timer: {
+    seconds: 0,
+    running: false,
+    counter: "",
+    interval: 17, // seconds based on 1000/60, to imitate time foramt of launry machine. For "minutes:seocnds" display, use 1000
+    timeOn: function() {
+        vm.timer.seconds++;
+        vm.gameTime = vm.timer.timeFormat(vm.timer.seconds);
+        view.updatePanel();
+    },
+    start: function() {
+        if (!this.running) {                    // run game timer (if not running already)
+            this.counter = setInterval(this.timeOn, this.interval);
+            this.running = true;
+        }
+    },
+    pause: function() {
+        if (this.running) {                     // if the game is running, pause it
+            clearInterval(this.counter);
+            this.running = false;
+        }
+        else if (vm.timer.seconds) {                     // if the game is paused, resume it
+            this.start();
+        }
+    },
+    reset: function() {
+        clearInterval(this.counter);
+        this.running = false;
+        vm.timer.seconds = 0;
+    },
+    timeFormat: function(seconds) {
+      if (seconds < 60 ) {             // Time is 00:00 to 00:59
+          if (seconds < 10) {          // Time is between 0-9 (00:0X)
+              return `00:0${seconds.toString()}`;
+          }
+          else {                      // Time is between 10-59 (00:XX)
+              return `00:${seconds.toString()}`;
+          }
+      }
+      else if (seconds < 600) {       // Time is 01:00 to 09:99    
+          if (seconds%60 < 10) {      // Time is (0X:0X)
+              return `0${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;   
+          }
+          else {                      // Time is (0X:XX)
+              return `0${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
+          }
+      }
+      else {                          // Time is 10:00 - 99:99
+          if (seconds%60 < 10) {      // Time is (XX:0X)
+              return `${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;
+          }
+          else {                      // Time is (XX:XX)
+              return `${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
+          }
+      }
+    }
+  },
 
 };
 
@@ -91,6 +161,9 @@ const view = {
     this.time = this.score[1];
     this.movesRecord = this.score[2];
     this.moves = this.score[3];
+    this.gameRate = 5;
+    this.tempSign = view.stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
+
   },
 
   updateDeck: function(pairsDeck) {
@@ -102,7 +175,15 @@ const view = {
   updatePanel: function() {
     this.time.innerHTML = vm.gameTime;
     this.moves.innerHTML = vm.gameMoves;
-  }
+  },
+
+  starsReset: function() {
+    view.gameRate = 5;
+    for (const star of view.stars) {
+        star.classList.remove("starOn");
+    }
+  },
+
 
 };
 
