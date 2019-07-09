@@ -266,7 +266,7 @@ timeRecord = view.timeRecord
 time = view.time
 movesRecord = view.movesRecord
 moves = view.moves
-gameTime = vm.gameTime
+gameTime = *DELETED*
 gameMoves = vm.gameMoves
 scoreUpdate = view.updatePanel()
 scoreReset = vm.scoreReset()
@@ -393,8 +393,8 @@ function popupWin() {
 }
 
 function playAgain() {
-    endScore[0].innerHTML = vm.gameTime; // Game Time
-    endScore[1].innerHTML = vm.gameMoves; // Game Moves 
+    endScore[0].innerHTML = view.time.innerText; //vm.gameTime; // Game Time
+    endScore[1].innerHTML = view.moves.innerText; //vm.gameMoves; // Game Moves 
     endTemp[0].innerText = tempGreet[(view.gameRate-1)][0];
     endTemp[1].innerText = tempGreet[(view.gameRate-1)][1];
 
@@ -418,7 +418,7 @@ function playAgain() {
 */
 
 function gameOver() {
-    //view.updatePanel();
+    view.updatePanel(vm.timer.seconds, vm.gameMoves);
     vm.timer.pause();
     viewPopUp.updateRecords();
     vm.timer.seconds = 0; // prevets the pause button to work
@@ -438,7 +438,7 @@ function cardChecker(evt) {
     let checkCard = evt.target;
     if (checkCard.nodeName === "LI") {
         // If a card was clicked, start the Game
-        if (vm.gameTime === 0) {
+        if (vm.timer.seconds === 0) {
             vm.timer.start();
             view.stars[4].classList.toggle("starOn");
             view.tempSign.textContent = `${model.tempStock[(view.gameRate)]}`;   
