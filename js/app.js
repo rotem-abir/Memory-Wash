@@ -8,189 +8,162 @@ let speedEnd;
 *   SHUFFLE deck
 */
 
-// const cards = document.getElementsByClassName("card");
-// const deck = [...cards];
-// const stock = deck.map(function(card) {
-//     return card.innerHTML;
-// });
+const cards = document.getElementsByClassName("card");
+const deck = [...cards];
+const stock = deck.map(function(card) {
+    return card.innerHTML;
+});
 
-// function shuffle(array) {
-//     let m = array.length, t, i;
-//     // While there remain elements to shuffle…
-//     while (m) {
-//       // Pick a remaining element…
-//       i = Math.floor(Math.random() * m--);
-//       // And swap it with the current element.
-//       t = array[m];
-//       array[m] = array[i];
-//       array[i] = t;
-//     }
-// }
+function shuffle(array) {
+    let m = array.length, t, i;
+    // While there remain elements to shuffle…
+    while (m) {
+      // Pick a remaining element…
+      i = Math.floor(Math.random() * m--);
+      // And swap it with the current element.
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+}
 
-// function buildDeck(stock) {
-//     let i, m = 8, pairsDeck = [];
-//     shuffle(stock);     // shuffle stock and build a new deck with pairs
-//     pairsDeck.length = 16;     
-//     for (i = 0; i < 8; i++) {
-//         pairsDeck[i] = stock[i];
-//         pairsDeck[m] = stock[i];
-//         m++;
-//     }
-//     shuffle(pairsDeck);     // shuffle new deck and update the DOM
-//     for (i = 0; i < 16; i++) {
-//         deck[i].innerHTML = pairsDeck[i];
-//     }
-// }
-
+function buildDeck(stock) {
+    let i, m = 8, pairsDeck = [];
+    shuffle(stock);     // shuffle stock and build a new deck with pairs
+    pairsDeck.length = 16;     
+    for (i = 0; i < 8; i++) {
+        pairsDeck[i] = stock[i];
+        pairsDeck[m] = stock[i];
+        m++;
+    }
+    shuffle(pairsDeck);     // shuffle new deck and update the DOM
+    for (i = 0; i < 16; i++) {
+        deck[i].innerHTML = pairsDeck[i];
+    }
+}
 
 /*
 *   SCORE panel
 */
 
-// const score = Array.from(document.getElementsByClassName("count"));
-// const stars = document.querySelectorAll(".star");
-// const timeRecord = score[0];
-// const time = score[1];
-// const movesRecord = score[2];
-// const moves = score[3];
+const score = Array.from(document.getElementsByClassName("count"));
+const stars = document.querySelectorAll(".star");
+const timeRecord = score[0];
+const time = score[1];
+const movesRecord = score[2];
+const moves = score[3];
 
-// let gameTime = "01:23";
-// let gameMoves = "45";
+let gameTime = "01:23";
+let gameMoves = "45";
 
-// function scoreUpdate(){
-//     time.innerHTML = gameTime;
-//     moves.innerHTML = gameMoves;
-// }
+function scoreUpdate(){
+    time.innerHTML = gameTime;
+    moves.innerHTML = gameMoves;
+}
 
-// function scoreReset() {
-//     gameTime = "00:00";
-//     gameMoves = "00";
-//     scoreUpdate();
-// }
+function scoreReset() {
+    gameTime = "00:00";
+    gameMoves = "00";
+    scoreUpdate();
+}
 
 /*
 *   RATING system ("STARS")
 */
 
+let gameRate = 5;
+const tempSign = stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
+const tempStock = ["money", "child_care", "sync_disabled","sync_problem", "sync", "whatshot"]; // temprature signs options
 
-// function checkRating(rating) {
-//     if ((vm.gameMoves === 11) || (vm.gameMoves === 13) || (vm.gameMoves === 16) || (vm.gameMoves === 19)) {
-//         rating--;
-//         view.stars[rating].classList.toggle("starOn");
-//         rating--;
-//         view.stars[rating].classList.toggle("starOn");
-//         view.gameRate--;
-//         view.tempSign.textContent = `${model.tempStock[(view.gameRate)]}`;    
-//     }
-// }
+function checkRating(rating) {
+    if ((gameMoves === 11) || (gameMoves === 13) || (gameMoves === 16) || (gameMoves === 19)) {
+        rating--;
+        stars[rating].classList.toggle("starOn");
+        rating--;
+        stars[rating].classList.toggle("starOn");
+        gameRate--;
+        tempSign.textContent = `${tempStock[(gameRate)]}`;    
+    }
+}
 
-
+function starsReset() {
+    gameRate = 5;
+    for (const star of stars) {
+        star.classList.remove("starOn");
+    }
+}
 
 /*
 *  TIME display
 */
 
-// function timeFormat(seconds) {
-//     if (seconds < 60 ) {             // Time is 00:00 to 00:59
-//         if (seconds < 10) {          // Time is between 0-9 (00:0X)
-//             return `00:0${seconds.toString()}`;
-//         }
-//         else {                      // Time is between 10-59 (00:XX)
-//             return `00:${seconds.toString()}`;
-//         }
-//     }
-//     else if (seconds < 600) {       // Time is 01:00 to 09:99    
-//         if (seconds%60 < 10) {      // Time is (0X:0X)
-//             return `0${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;   
-//         }
-//         else {                      // Time is (0X:XX)
-//             return `0${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
-//         }
-//     }
-//     else {                          // Time is 10:00 - 99:99
-//         if (seconds%60 < 10) {      // Time is (XX:0X)
-//             return `${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;
-//         }
-//         else {                      // Time is (XX:XX)
-//             return `${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
-//         }
-//     }
-// }
-
+function timeFormat(seconds) {
+    if (seconds < 60 ) {             // Time is 00:00 to 00:59
+        if (seconds < 10) {          // Time is between 0-9 (00:0X)
+            return `00:0${seconds.toString()}`;
+        }
+        else {                      // Time is between 10-59 (00:XX)
+            return `00:${seconds.toString()}`;
+        }
+    }
+    else if (seconds < 600) {       // Time is 01:00 to 09:99    
+        if (seconds%60 < 10) {      // Time is (0X:0X)
+            return `0${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;   
+        }
+        else {                      // Time is (0X:XX)
+            return `0${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
+        }
+    }
+    else {                          // Time is 10:00 - 99:99
+        if (seconds%60 < 10) {      // Time is (XX:0X)
+            return `${((seconds-seconds%60)/60).toFixed(0)}:0${(seconds%60).toFixed(0)}`;
+        }
+        else {                      // Time is (XX:XX)
+            return `${((seconds-seconds%60)/60).toFixed(0)}:${(seconds%60).toFixed(0)}`;
+        }
+    }
+}
 
 /*
 *   TIMER object
 */
 
+let seconds = 0;    // originally planned to be seconds, in fact 1=17 milliseconds
 
-// let seconds = 0;    // originally planned to be seconds, in fact 1=17 milliseconds
-
-// const timer = {
-//     running: false,
-//     counter: "",
-//     interval: 17, // seconds based on 1000/60, to imitate time foramt of launry machine. For "minutes:seocnds" display, use 1000
-//     timeOn: function() {
-//         this.seconds++;
-//         vm.gameTime = vm.timer.timeFormat(this.seconds);
-//         view.updatePanel();
-//     },
-//     start: function() {
-//         if (!this.running) {                    // run game timer (if not running already)
-//             this.counter = setInterval(this.timeOn, this.interval);
-//             this.running = true;
-//         }
-//     },
-//     pause: function() {
-//         if (this.running) {                     // if the game is running, pause it
-//             clearInterval(this.counter);
-//             this.running = false;
-//         }
-//         else if (this.seconds) {                     // if the game is paused, resume it
-//             this.start();
-//         }
-//     },
-//     reset: function() {
-//         clearInterval(this.counter);
-//         this.running = false;
-//         this.seconds = 0;
-//     }
-// };
+const timer = {
+    running: false,
+    counter: "",
+    interval: 17, // seconds based on 1000/60, to imitate time foramt of launry machine. For "minutes:seocnds" display, use 1000
+    timeOn: function() {
+        seconds++;
+        gameTime = timeFormat(seconds);
+        scoreUpdate();
+    },
+    start: function() {
+        if (!this.running) {                    // run game timer (if not running already)
+            this.counter = setInterval(this.timeOn, this.interval);
+            this.running = true;
+        }
+    },
+    pause: function() {
+        if (this.running) {                     // if the game is running, pause it
+            clearInterval(this.counter);
+            this.running = false;
+        }
+        else if (seconds) {                     // if the game is paused, resume it
+            this.start();
+        }
+    },
+    reset: function() {
+        clearInterval(this.counter);
+        this.running = false;
+        seconds = 0;
+    }
+};
 
 /*
 *   RECRODS holder
 */
-
-
-/*
-*
-cards = vm.cards
-deck = vm.deck
-stock = model.deckData
-shuffle() = vm.shuffleDeck()
-buildDeck() = vm.buildDeck()
-
-score = view.score
-stars = view.stars
-timeRecord = view.timeRecord
-time = view.time
-movesRecord = view.movesRecord
-moves = view.moves
-gameTime = vm.gameTime
-gameMoves = vm.gameMoves
-scoreUpdate = view.updatePanel()
-scoreReset = vm.scoreReset()
-
-gameRate = view.gameRate
-tempSign = view.tempSign
-checkRating = vm.checkRating()
-starsReset = view.starsReset()
-timeFormat = vm.timer.timeFormat()
-seconds = vm.timer.seconds / this.seconds
-timer = vm.timer
-
-*
-*/
-
 
 const best = {
     time: 5940,
@@ -212,9 +185,9 @@ function readLoacalRecord() {
     if (timeRead !== null) { // checks if its not the first game ever{
         timeRead = parseInt(timeRead);
         moveRead = parseInt(moveRead);
-        view.timeRecord.innerHTML = vm.timer.timeFormat(timeRead);
-        view.movesRecord.innerHTML = moveRead;
-        vm.scoreReset();
+        timeRecord.innerHTML = timeFormat(timeRead);
+        movesRecord.innerHTML = moveRead;
+        scoreReset();
     }
     else {
         timeRead = 5940;
@@ -225,8 +198,8 @@ function readLoacalRecord() {
 
 function cleanLocalRecord() {
     localStorage.clear();
-    view.timeRecord.innerHTML = "00:00";
-    view.movesRecord.innerHTML = "00";
+    timeRecord.innerHTML = "00:00";
+    movesRecord.innerHTML = "00";
     best.moves = 999;
     best.time = 5940;
 }
@@ -241,23 +214,23 @@ const newBest = endScreen.querySelectorAll(".newBest"); // "new best" elemnts on
 const endMsg = endScreen.firstElementChild.lastElementChild.firstElementChild; // the last message on the popup screen
 
 function recordUpdate() {
-    if (view.gameRate > best.rate) {
+    if (gameRate > best.rate) {
         endMsg.innerText = `Fairly Clean! You're getting warmer.`
         if ((best.rate === 0 )&&(best.moves !== 999)) {                  // if it's a returning player
             endMsg.innerHTML = `Good to see you again! Remeber, for best results always combine your wash with a good laundry detergent.`;
         }
     }
-    if (this.seconds < best.time) {
+    if (seconds < best.time) {
         newBest[0].classList.remove("hideEl"); // show new record
-        newBest[0].lastElementChild.innerHTML = `(Record broke: ${vm.timer.timeFormat(best.time)})` // old time record
-        best.time = this.seconds;
-        view.timeRecord.innerHTML = vm.timer.timeFormat(best.time);
+        newBest[0].lastElementChild.innerHTML = `(Record broke: ${timeFormat(best.time)})` // old time record
+        best.time = seconds;
+        timeRecord.innerHTML = timeFormat(best.time);
         saveLocalRecord(best.time, best.moves);
     }
     else {
         newBest[0].classList.add("hideEl"); // no time record broke
     }
-    if (vm.gameMoves < best.moves) {
+    if (gameMoves < best.moves) {
         newBest[1].classList.remove("hideEl"); // show new record
         newBest[1].lastElementChild.innerHTML = `(Record broke: ${best.moves})`; // old move record
         if (best.moves === 999) { // if its the first time ever played the game
@@ -265,14 +238,14 @@ function recordUpdate() {
             newBest[0].lastElementChild.innerHTML = "Your record will be saved!";
             newBest[1].lastElementChild.innerHTML = "Less moves = you get clenaer!";
         }
-        best.moves = vm.gameMoves;
-        view.movesRecord.innerHTML = best.moves;
+        best.moves = gameMoves;
+        movesRecord.innerHTML = best.moves;
         saveLocalRecord(best.time, best.moves);
     } 
     else {
         newBest[1].classList.add("hideEl"); // no moves record broke
     }
-    best.rate = view.gameRate;
+    best.rate = gameRate;
 }
 
 /*
@@ -309,7 +282,7 @@ const board = document.querySelector(".board");
 
 function explainListen (evt) {
     let isImg = evt.target;
-    if ((isImg.nodeName === "IMG") && (!(vm.timer.running))){
+    if ((isImg.nodeName === "IMG") && (!(timer.running))){
         isImg.classList.toggle("explain");
         isImg.nextSibling.classList.toggle("hide");
     }
@@ -335,12 +308,12 @@ function cardsReset(delay) {
     picked = 0;
     remaining = 8;
 
-    for (const card of vm.cards) {
+    for (const card of cards) {
         card.classList.remove("pick", "solved", "closed");
         card.firstElementChild.classList.remove("hide");
     }
     setTimeout(function() {
-        for (const card of vm.cards) {
+        for (const card of cards) {
             card.classList.add("closed");
             card.firstElementChild.classList.add("hide");
         }
@@ -348,10 +321,10 @@ function cardsReset(delay) {
 }
 
 function resetGame() {
-    vm.buildDeck(model.deckData);
-    vm.scoreReset();
-    view.starsReset();
-    vm.timer.reset();
+    buildDeck(stock);
+    scoreReset();
+    starsReset();
+    timer.reset();
     explainCards.hide();
     cardsReset(delay);
     endMsg.innerText = "";
@@ -379,13 +352,13 @@ function popupWin() {
 }
 
 function playAgain() {
-    endScore[0].innerHTML = vm.gameTime; // Game Time
-    endScore[1].innerHTML = vm.gameMoves; // Game Moves 
-    endTemp[0].innerText = tempGreet[(view.gameRate-1)][0];
-    endTemp[1].innerText = tempGreet[(view.gameRate-1)][1];
+    endScore[0].innerHTML = gameTime; // Game Time
+    endScore[1].innerHTML = gameMoves; // Game Moves 
+    endTemp[0].innerText = tempGreet[(gameRate-1)][0];
+    endTemp[1].innerText = tempGreet[(gameRate-1)][1];
 
     endTemp[2].textContent = "";            // create amount of stars
-    for (let i = 0; i < view.gameRate; i++){
+    for (let i = 0; i < gameRate; i++){
         endTemp[2].textContent += "🌟 ";
     }
     popupWin();   // shows the pop up
@@ -404,10 +377,10 @@ function playAgain() {
 */
 
 function gameOver() {
-    view.updatePanel();
-    vm.timer.pause();
+    scoreUpdate();
+    timer.pause();
     recordUpdate();
-    this.seconds = 0; // prevets the pause button to work
+    seconds = 0; // prevets the pause button to work
     explainCards.show();
     setTimeout(playAgain , 1000);
     if ((best.rate === 5)&&(best.moves < 10)) { // opens bonus level
@@ -424,13 +397,13 @@ function cardChecker(evt) {
     let checkCard = evt.target;
     if (checkCard.nodeName === "LI") {
         // If a card was clicked, start the Game
-        if (vm.gameTime === "00:00") {
-            vm.timer.start();
-            view.stars[4].classList.toggle("starOn");
-            view.tempSign.textContent = `${model.tempStock[(view.gameRate)]}`;   
+        if (gameTime === "00:00") {
+            timer.start();
+            stars[4].classList.toggle("starOn");
+            tempSign.textContent = `${tempStock[(gameRate)]}`;   
         }
         //if the card is not already picked or solved, and if the game is running aka not paused
-        if (!(checkCard.classList.contains("pick", "solved")) && !(checkCard.classList.contains("solved")) && (vm.timer.running)) {
+        if (!(checkCard.classList.contains("pick", "solved")) && !(checkCard.classList.contains("solved")) && (timer.running)) {
             // if it's the first card
             if (picked === 0) {
                 picked = 1;
@@ -441,11 +414,11 @@ function cardChecker(evt) {
             // if it's the second card
             else if (picked === 1) {
                 picked = 2;
-                vm.gameMoves++;
+                gameMoves++;
                 checkCard.classList.add("pick");
                 checkCard.firstElementChild.classList.remove("hide");
                 matchCards(firstCard, checkCard);
-                vm.checkRating(view.gameRate);
+                checkRating(gameRate);
                 if (remaining === 0) {
                     gameOver();
                 }
@@ -464,8 +437,8 @@ panel.addEventListener('click', function(evt) {
     checkClass = [...checkClass];
     for (let check of checkClass) {     // check what was clicked on the pannel
         if (check === "pause") {
-            vm.timer.pause();
-            if (!vm.timer.running) {       // toggle explanations according to game run/pause
+            timer.pause();
+            if (!timer.running) {       // toggle explanations according to game run/pause
                 explainCards.show();
             }
             else {
@@ -475,8 +448,8 @@ panel.addEventListener('click', function(evt) {
         else if (check === "reset"){
             resetGame();
             if (best.moves === 999) {   // if it's the first game
-                view.timeRecord.innerHTML = "00:00";
-                view.movesRecord.innerHTML = "00";
+                timeRecord.innerHTML = "00:00";
+                movesRecord.innerHTML = "00";
             }
         }
         else if (check === "stars") {   // for mobile - equal to the button "c" . to clean the local memory
@@ -525,37 +498,37 @@ const iddqd = {
         if (this.godmode === false) {
             this.godmode = true;
             delay = 3000;               // make pre-game delay longer
-            vm.timer.interval = 1000;      // turn seconds into minutes
+            timer.interval = 1000;      // turn seconds into minutes
             this.moveRec = best.moves;  // keep records
             best.moves = 0;
             this.timeRec = best.time;
             best.time = 0;
             this.starRec = best.rate;
             best.rate = 6;
-            view.timeRecord.innerHTML = "BONUS!";    // change score display
-            view.movesRecord.innerHTML = "☺";
-            view.tempSign.textContent = "verified_user";
-            for (const star of view.stars) {        // twist rating
+            timeRecord.innerHTML = "BONUS!";    // change score display
+            movesRecord.innerHTML = "☺";
+            tempSign.textContent = "verified_user";
+            for (const star of stars) {        // twist rating
                 star.classList.toggle("starOn");
             }
-            for (const card of vm.cards) {         // show cards
+            for (const card of cards) {         // show cards
                 card.firstElementChild.classList.add("cheat"); 
             }
         }
         else {                          // bring everything back
             this.godmode = false;
             delay = 1500;
-            vm.timer.interval = 16.66;
+            timer.interval = 16.66;
             best.moves = this.moveRec;
             best.time = this.timeRec;
             best.rate = this.starRec;
-            view.timeRecord.innerHTML = vm.timer.timeFormat(best.time);
-            view.movesRecord.innerHTML = best.moves;
-            view.tempSign.textContent = `${model.tempStock[view.gameRate]}`; 
-            for (const star of view.stars) {
+            timeRecord.innerHTML = timeFormat(best.time);
+            movesRecord.innerHTML = best.moves;
+            tempSign.textContent = `${tempStock[gameRate]}`; 
+            for (const star of stars) {
                 star.classList.toggle("starOn");
             }
-            for (const card of vm.cards) {
+            for (const card of cards) {
                 card.firstElementChild.classList.remove("cheat"); 
             }
         }
