@@ -160,6 +160,44 @@ let speedEnd;
 *   RECRODS holder
 */
 
+// const best = {
+//     time: 5940,
+//     moves: 999,
+//     rate: 0
+// };
+
+// function saveLocalRecord(time, moves) {
+//     time.toString();
+//     moves.toString();
+//     localStorage.setItem('time', time);
+//     localStorage.setItem('moves', moves);
+// }
+
+// function readLoacalRecord() {
+//     let timeRead, moveRead
+//     timeRead = localStorage.getItem('time');
+//     moveRead = localStorage.getItem('moves');
+//     if (timeRead !== null) { // checks if its not the first game ever{
+//         timeRead = parseInt(timeRead);
+//         moveRead = parseInt(moveRead);
+//         view.timeRecord.innerHTML = vm.timer.timeFormat(timeRead);
+//         view.movesRecord.innerHTML = moveRead;
+//         vm.scoreReset();
+//     }
+//     else {
+//         timeRead = 5940;
+//         moveRead = 999; 
+//     }
+//     return [timeRead, moveRead];
+// }
+
+// function cleanLocalRecord() {
+//     localStorage.clear();
+//     view.timeRecord.innerHTML = "00:00";
+//     view.movesRecord.innerHTML = "00";
+//     model.record.moves = 999;
+//     model.record.time = 5940;
+// }
 
 /*
 *
@@ -185,51 +223,16 @@ tempSign = view.tempSign
 checkRating = vm.checkRating()
 starsReset = view.starsReset()
 timeFormat = vm.timer.timeFormat()
-seconds = vm.timer.seconds / this.seconds
+seconds = vm.timer.seconds
 timer = vm.timer
+best = model.record
+
+saveLocalRecord = model.localRecord.saveRecord()
+readLoacalRecord = vm.checkRecords()
+cleanLocalRecord = vm.deleteRecords()
 
 *
 */
-
-
-const best = {
-    time: 5940,
-    moves: 999,
-    rate: 0
-};
-
-function saveLocalRecord(time, moves) {
-    time.toString();
-    moves.toString();
-    localStorage.setItem('time', time);
-    localStorage.setItem('moves', moves);
-}
-
-function readLoacalRecord() {
-    let timeRead, moveRead
-    timeRead = localStorage.getItem('time');
-    moveRead = localStorage.getItem('moves');
-    if (timeRead !== null) { // checks if its not the first game ever{
-        timeRead = parseInt(timeRead);
-        moveRead = parseInt(moveRead);
-        view.timeRecord.innerHTML = vm.timer.timeFormat(timeRead);
-        view.movesRecord.innerHTML = moveRead;
-        vm.scoreReset();
-    }
-    else {
-        timeRead = 5940;
-        moveRead = 999; 
-    }
-    return [timeRead, moveRead];
-}
-
-function cleanLocalRecord() {
-    localStorage.clear();
-    view.timeRecord.innerHTML = "00:00";
-    view.movesRecord.innerHTML = "00";
-    best.moves = 999;
-    best.time = 5940;
-}
 
 
 /*
@@ -241,38 +244,38 @@ const newBest = endScreen.querySelectorAll(".newBest"); // "new best" elemnts on
 const endMsg = endScreen.firstElementChild.lastElementChild.firstElementChild; // the last message on the popup screen
 
 function recordUpdate() {
-    if (view.gameRate > best.rate) {
+    if (view.gameRate > model.record.rate) {
         endMsg.innerText = `Fairly Clean! You're getting warmer.`
-        if ((best.rate === 0 )&&(best.moves !== 999)) {                  // if it's a returning player
+        if ((model.record.rate === 0 )&&(model.record.moves !== 999)) {                  // if it's a returning player
             endMsg.innerHTML = `Good to see you again! Remeber, for best results always combine your wash with a good laundry detergent.`;
         }
     }
-    if (this.seconds < best.time) {
+    if (vm.timer.seconds < model.record.time) {
         newBest[0].classList.remove("hideEl"); // show new record
-        newBest[0].lastElementChild.innerHTML = `(Record broke: ${vm.timer.timeFormat(best.time)})` // old time record
-        best.time = this.seconds;
-        view.timeRecord.innerHTML = vm.timer.timeFormat(best.time);
-        saveLocalRecord(best.time, best.moves);
+        newBest[0].lastElementChild.innerHTML = `(Record broke: ${vm.timer.timeFormat(model.record.time)})` // old time record
+        model.record.time = vm.timer.seconds;
+        view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
+        model.localRecord.saveRecord(model.record.time, model.record.moves);
     }
     else {
         newBest[0].classList.add("hideEl"); // no time record broke
     }
-    if (vm.gameMoves < best.moves) {
+    if (vm.gameMoves < model.record.moves) {
         newBest[1].classList.remove("hideEl"); // show new record
-        newBest[1].lastElementChild.innerHTML = `(Record broke: ${best.moves})`; // old move record
-        if (best.moves === 999) { // if its the first time ever played the game
+        newBest[1].lastElementChild.innerHTML = `(Record broke: ${model.record.moves})`; // old move record
+        if (model.record.moves === 999) { // if its the first time ever played the game
             endMsg.innerText = `Less mistakes will grant you higher wash temprature = more stars. To clean your records press C on the keyboard. Otherwise:`;
             newBest[0].lastElementChild.innerHTML = "Your record will be saved!";
             newBest[1].lastElementChild.innerHTML = "Less moves = you get clenaer!";
         }
-        best.moves = vm.gameMoves;
-        view.movesRecord.innerHTML = best.moves;
-        saveLocalRecord(best.time, best.moves);
+        model.record.moves = vm.gameMoves;
+        view.movesRecord.innerHTML = model.record.moves;
+        model.localRecord.saveRecord(model.record.time, model.record.moves);
     } 
     else {
         newBest[1].classList.add("hideEl"); // no moves record broke
     }
-    best.rate = view.gameRate;
+    model.record.rate = view.gameRate;
 }
 
 /*
@@ -407,10 +410,10 @@ function gameOver() {
     view.updatePanel();
     vm.timer.pause();
     recordUpdate();
-    this.seconds = 0; // prevets the pause button to work
+    vm.timer.seconds = 0; // prevets the pause button to work
     explainCards.show();
     setTimeout(playAgain , 1000);
-    if ((best.rate === 5)&&(best.moves < 10)) { // opens bonus level
+    if ((model.record.rate === 5)&&(model.record.moves < 10)) { // opens bonus level
         iddqd.gouranga();
     }
 }
@@ -474,13 +477,13 @@ panel.addEventListener('click', function(evt) {
         }
         else if (check === "reset"){
             resetGame();
-            if (best.moves === 999) {   // if it's the first game
+            if (model.record.moves === 999) {   // if it's the first game
                 view.timeRecord.innerHTML = "00:00";
                 view.movesRecord.innerHTML = "00";
             }
         }
         else if (check === "stars") {   // for mobile - equal to the button "c" . to clean the local memory
-            cleanLocalRecord();
+            vm.deleteRecords();
         }
     }
 });
@@ -490,7 +493,7 @@ window.onkeyup = function(key) {
         iddqd.gouranga();
     }
     if ((key.key == "c") || (key.key == "C")) {
-        cleanLocalRecord();
+        vm.deleteRecords();
     }
     if ((key.key == "k") || (key.key == "K")) {
         endScreen.classList.toggle("hideEl")
@@ -510,7 +513,8 @@ console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!"
 
 board.addEventListener('click', cardChecker);
 explainCards.show();
-[best.time, best.moves] = readLoacalRecord();
+vm.checkRecords();
+// [model.record.time, model.record.moves] = vm.checkRecords();
 
 /*
 *   Bonus level
@@ -526,12 +530,12 @@ const iddqd = {
             this.godmode = true;
             delay = 3000;               // make pre-game delay longer
             vm.timer.interval = 1000;      // turn seconds into minutes
-            this.moveRec = best.moves;  // keep records
-            best.moves = 0;
-            this.timeRec = best.time;
-            best.time = 0;
-            this.starRec = best.rate;
-            best.rate = 6;
+            this.moveRec = model.record.moves;  // keep records
+            model.record.moves = 0;
+            this.timeRec = model.record.time;
+            model.record.time = 0;
+            this.starRec = model.record.rate;
+            model.record.rate = 6;
             view.timeRecord.innerHTML = "BONUS!";    // change score display
             view.movesRecord.innerHTML = "☺";
             view.tempSign.textContent = "verified_user";
@@ -546,11 +550,11 @@ const iddqd = {
             this.godmode = false;
             delay = 1500;
             vm.timer.interval = 16.66;
-            best.moves = this.moveRec;
-            best.time = this.timeRec;
-            best.rate = this.starRec;
-            view.timeRecord.innerHTML = vm.timer.timeFormat(best.time);
-            view.movesRecord.innerHTML = best.moves;
+            model.record.moves = this.moveRec;
+            model.record.time = this.timeRec;
+            model.record.rate = this.starRec;
+            view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
+            view.movesRecord.innerHTML = model.record.moves;
             view.tempSign.textContent = `${model.tempStock[view.gameRate]}`; 
             for (const star of view.stars) {
                 star.classList.toggle("starOn");
