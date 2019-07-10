@@ -365,7 +365,7 @@ function resetGame() {
     vm.buildDeck(model.deckData);
     vm.scoreReset();
     view.starsReset();
-    vm.timer.reset();
+    // vm.timer.reset()
     explainCards.hide();
     cardsReset(delay);
     viewPopUp.endMsg.innerText = "";

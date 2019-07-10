@@ -88,7 +88,8 @@ const vm = {
     view.updateDeck(pairsStock);
   },
   scoreReset: function() {
-    vm.gameMoves = "00";
+    this.gameMoves = "00";
+    vm.timer.reset();
     view.updatePanel(0, vm.gameMoves);
   },
   checkRating: function (rating) {
@@ -166,7 +167,7 @@ const vm = {
         }
       }
     }
-  }  
+  },  
 };
 
 
