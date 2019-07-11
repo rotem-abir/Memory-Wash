@@ -60,6 +60,8 @@ const vm = {
     this.deck = [...this.cards];
     // this.gameTime = 0;
     this.gameMoves = "00";
+    this.picked = 0;          // open cards
+    this.remaining = 8;       // pairs left
     model.init();
     view.init();
     viewPopUp.init();
@@ -89,7 +91,7 @@ const vm = {
   },
   scoreReset: function() {
     this.gameMoves = "00";
-    vm.timer.reset();
+    this.timer.reset();
     view.updatePanel(0, vm.gameMoves);
   },
   checkRating: function (rating) {
@@ -181,6 +183,7 @@ const view = {
     this.moves = this.score[3];
     this.gameRate = 5;
     this.tempSign = this.stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
+    this.board = document.querySelector(".board");
   },
   updateDeck: function(pairsDeck) {
     for (let i = 0; i < 16; i++) {
@@ -202,6 +205,40 @@ const view = {
     time = vm.timer.timeFormat(time);
     this.timeRecord.innerHTML = time;
     this.movesRecord.innerHTML = moves;
+  },
+  matchCards: function(a, b) {
+    if (a.innerHTML === b.innerHTML ) {
+      a.classList.add("solved");
+      b.classList.add("solved");
+      vm.remaining--;
+      vm.picked = 0; // happens directly, as no time delay is needed for correct guess
+    }
+    else {
+      setTimeout(function () {
+        a.classList.remove("pick");
+        b.classList.remove("pick");
+        a.firstElementChild.classList.add("hide"); 
+        b.firstElementChild.classList.add("hide");
+        vm.picked = 0;   // must be after the delay, to prevet card picking during this time
+      }, 650)
+    }
+  },
+  explainListen: function (evt) {
+    let isImg = evt.target;
+    if ((isImg.nodeName === "IMG") && (!(vm.timer.running))){
+      isImg.classList.toggle("explain");
+      isImg.nextSibling.classList.toggle("hide");
+    }
+  },
+  explainCards: {
+    show: function() {
+      view.board.addEventListener('mouseover', view.explainListen);
+      view.board.addEventListener('mouseout', view.explainListen);
+    },
+    hide: function() {
+      view.board.removeEventListener('mouseover', view.explainListen);
+      view.board.removeEventListener('mouseout', view.explainListen);
+    }
   }
 };
 

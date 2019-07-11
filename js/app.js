@@ -252,6 +252,54 @@ let speedEnd;
 *   MATCHING mechanism
 */
 
+
+// let picked = 0; // open cards
+// let remaining = 8; // pairs left
+
+// function matchCards(a, b) {
+//     if (a.innerHTML === b.innerHTML ) {
+//         a.classList.add("solved");
+//         b.classList.add("solved");
+//         remaining--;
+//         picked = 0; // happens directly, as no time delay is needed for correct guess
+//     }
+//     else {
+//         setTimeout(function () {
+//             a.classList.remove("pick");
+//             b.classList.remove("pick");
+//             a.firstElementChild.classList.add("hide"); 
+//             b.firstElementChild.classList.add("hide");
+//             picked = 0;   // must be after the delay, to prevet card picking during this time
+//         }, 650)
+//     }
+// }
+
+/*
+*   EXPLAINATION exposer
+*/
+
+
+// const board = document.querySelector(".board");
+
+// function explainListen (evt) {
+//     let isImg = evt.target;
+//     if ((isImg.nodeName === "IMG") && (!(vm.timer.running))){
+//         isImg.classList.toggle("explain");
+//         isImg.nextSibling.classList.toggle("hide");
+//     }
+// }
+
+// const explainCards = {
+//     show: function() {
+//         view.board.addEventListener('mouseover', view.explainListen);
+//         view.board.addEventListener('mouseout', view.explainListen);
+//     },
+//     hide: function() {
+//         view.board.removeEventListener('mouseover', view.explainListen);
+//         view.board.removeEventListener('mouseout', view.explainListen);
+//     }
+// };
+
 /*
 *
 cards = vm.cards
@@ -290,55 +338,15 @@ newBest = viewPopUp.newBest
 endMsg = viewPopUp.endMsg
 recordUpdate = viewPopUp.updateRecords()
 
+picked = vm.picked
+remaining = vm.remaining
+matchCards = view.matchCards()
+board = view.board
+explainListen = view.explainListen
+explainCards = view.explainCards
 
 *
 */
-let picked = 0; // open cards
-let remaining = 8; // pairs left
-
-function matchCards(a, b) {
-    
-    if (a.innerHTML === b.innerHTML ) {
-        a.classList.add("solved");
-        b.classList.add("solved");
-        remaining--;
-        picked = 0; // happens directly, as no time delay is needed for correct guess
-    }
-    else {
-        setTimeout(function () {
-            a.classList.remove("pick");
-            b.classList.remove("pick");
-            a.firstElementChild.classList.add("hide"); 
-            b.firstElementChild.classList.add("hide");
-            picked = 0;   // must be after the delay, to prevet card picking during this time
-        }, 650)
-    }
-}
-
-/*
-*   EXPLAINATION exposer
-*/
-
-const board = document.querySelector(".board");
-
-function explainListen (evt) {
-    let isImg = evt.target;
-    if ((isImg.nodeName === "IMG") && (!(vm.timer.running))){
-        isImg.classList.toggle("explain");
-        isImg.nextSibling.classList.toggle("hide");
-    }
-}
-
-const explainCards = {
-    show: function() {
-        board.addEventListener('mouseover', explainListen);
-        board.addEventListener('mouseout', explainListen);
-    },
-    hide: function() {
-        board.removeEventListener('mouseover', explainListen);
-        board.removeEventListener('mouseout', explainListen);
-    }
-};
 
 /*
 *   START game
@@ -346,8 +354,8 @@ const explainCards = {
 
 let delay = 1500;
 function cardsReset(delay) {
-    picked = 0;
-    remaining = 8;
+    vm.picked = 0;
+    vm.remaining = 8;
 
     for (const card of vm.cards) {
         card.classList.remove("pick", "solved", "closed");
@@ -365,8 +373,7 @@ function resetGame() {
     vm.buildDeck(model.deckData);
     vm.scoreReset();
     view.starsReset();
-    // vm.timer.reset()
-    explainCards.hide();
+    view.explainCards.hide();
     cardsReset(delay);
     viewPopUp.endMsg.innerText = "";
 }
@@ -409,7 +416,7 @@ function playAgain() {
     }
     buttonLearn.onclick = function(){
         popupWin();
-        explainCards.show();
+        view.explainCards.show();
     }
 }
 
@@ -422,7 +429,7 @@ function gameOver() {
     vm.timer.pause();
     viewPopUp.updateRecords();
     vm.timer.seconds = 0; // prevets the pause button to work
-    explainCards.show();
+    view.explainCards.show();
     setTimeout(playAgain , 1000);
     if ((model.record.rate === 5)&&(model.record.moves < 10)) { // opens bonus level
         iddqd.gouranga();
@@ -446,21 +453,21 @@ function cardChecker(evt) {
         //if the card is not already picked or solved, and if the game is running aka not paused
         if (!(checkCard.classList.contains("pick", "solved")) && !(checkCard.classList.contains("solved")) && (vm.timer.running)) {
             // if it's the first card
-            if (picked === 0) {
-                picked = 1;
+            if (vm.picked === 0) {
+                vm.picked = 1;
                 checkCard.classList.add("pick");
                 checkCard.firstElementChild.classList.remove("hide");
                 firstCard = checkCard;
             }
             // if it's the second card
-            else if (picked === 1) {
-                picked = 2;
+            else if (vm.picked === 1) {
+                vm.picked = 2;
                 vm.gameMoves++;
                 checkCard.classList.add("pick");
                 checkCard.firstElementChild.classList.remove("hide");
-                matchCards(firstCard, checkCard);
+                view.matchCards(firstCard, checkCard);
                 vm.checkRating(view.gameRate);
-                if (remaining === 0) {
+                if (vm.remaining === 0) {
                     gameOver();
                 }
             }
@@ -480,10 +487,10 @@ panel.addEventListener('click', function(evt) {
         if (check === "pause") {
             vm.timer.pause();
             if (!vm.timer.running) {       // toggle explanations according to game run/pause
-                explainCards.show();
+                view.explainCards.show();
             }
             else {
-                explainCards.hide();
+                view.explainCards.hide();
             }
         }
         else if (check === "reset"){
@@ -521,8 +528,8 @@ console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!"
 *   RUN the game
 */
 
-board.addEventListener('click', cardChecker);
-explainCards.show();
+view.board.addEventListener('click', cardChecker);
+view.explainCards.show();
 vm.readRecords();
 // [model.record.time, model.record.moves] = vm.checkRecords();
 
