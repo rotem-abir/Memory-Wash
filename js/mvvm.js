@@ -57,7 +57,7 @@ const model = {
 const vm = {
   init: function() {
     this.cards = document.getElementsByClassName("card");
-    this.deck = [...this.cards];
+    this.deck = [...this.cards]; /* needs to be in the view */
     // this.gameTime = 0;
     this.gameMoves = "00";
     this.picked = 0;          // open cards
@@ -65,6 +65,12 @@ const vm = {
     model.init();
     view.init();
     viewPopUp.init();
+  },
+  getRecords: function() {
+    return model.record;
+  },
+  saveRecords: function(time, moves) {
+    model.localRecord.saveRecord(time, moves);
   },
   shuffleDeck: function(array) {
     let m = array.length, t, i;               // While there remain elements to shuffle…
@@ -169,7 +175,18 @@ const vm = {
         }
       }
     }
-  },  
+  },
+  gameOver: function() {
+    view.updatePanel(vm.timer.seconds, vm.gameMoves);
+    this.timer.pause();
+    viewPopUp.updateRecords();
+    this.timer.seconds = 0; // prevets the pause button to work
+    view.explainCards.show();
+    setTimeout(viewPopUp.playAgain , 1000);
+    if ((model.record.rate === 5)&&(model.record.moves < 10)) { // opens bonus level
+        iddqd.gouranga();
+    }  
+  }  
 };
 
 
@@ -184,6 +201,7 @@ const view = {
     this.gameRate = 5;
     this.tempSign = this.stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
     this.board = document.querySelector(".board");
+    this.delay = 1500;
   },
   updateDeck: function(pairsDeck) {
     for (let i = 0; i < 16; i++) {
@@ -195,16 +213,31 @@ const view = {
     this.time.innerHTML = time;
     this.moves.innerHTML = moves;
   },
+  updateRecord: function(time, moves) {
+    time = vm.timer.timeFormat(time);
+    this.timeRecord.innerHTML = time;
+    this.movesRecord.innerHTML = moves;
+  },
   starsReset: function() {
     this.gameRate = 5;
     for (const star of view.stars) {
       star.classList.remove("starOn");
     }
   },
-  updateRecord: function(time, moves) {
-    time = vm.timer.timeFormat(time);
-    this.timeRecord.innerHTML = time;
-    this.movesRecord.innerHTML = moves;
+  cardsReset: function (delay) {
+    vm.picked = 0;
+    vm.remaining = 8;
+
+    for (const card of vm.cards) {
+      card.classList.remove("pick", "solved", "closed");
+      card.firstElementChild.classList.remove("hide");
+    }
+    setTimeout(function() {
+      for (const card of vm.cards) {
+        card.classList.add("closed");
+        card.firstElementChild.classList.add("hide");
+      }
+    }, view.delay);
   },
   matchCards: function(a, b) {
     if (a.innerHTML === b.innerHTML ) {
@@ -239,6 +272,14 @@ const view = {
       view.board.removeEventListener('mouseover', view.explainListen);
       view.board.removeEventListener('mouseout', view.explainListen);
     }
+  },
+  resetGame: function() {
+    vm.buildDeck(model.deckData);
+    vm.scoreReset();
+    view.starsReset();
+    view.explainCards.hide();
+    view.cardsReset(view.delay);
+    viewPopUp.endMsg.innerText = "";
   }
 };
 
@@ -248,41 +289,69 @@ const viewPopUp = {
     this.endScreen = document.querySelector(".endScreen"); // the game-over popup screen
     this.newBest = this.endScreen.querySelectorAll(".newBest"); // "new best" elemnts on the popup screen
     this.endMsg = this.endScreen.firstElementChild.lastElementChild.firstElementChild; // the last message on the popup screen
+    this.endScore = this.endScreen.querySelectorAll(".endScore");
+    this.endTemp = this.endScreen.querySelectorAll(".endTemp")
+    this.buttonSpin = this.endMsg.nextElementSibling;
+    this.buttonLearn = this.buttonSpin.nextElementSibling;
   },
   updateRecords: function() {
-    if (view.gameRate > model.record.rate) {
+    let records = vm.getRecords();
+    if (view.gameRate > records.rate) {
       this.endMsg.innerText = `Fairly Clean! You're getting warmer.`
-      if ((model.record.rate === 0 )&&(model.record.moves !== 999)) {                  // if it's a returning player
+      if ((records.rate === 0 )&&(records.moves !== 999)) {                  // if it's a returning player
         this.endMsg.innerHTML = `Good to see you again! Remeber, for best results always combine your wash with a good laundry detergent.`;
       }
     }
-    if (vm.timer.seconds < model.record.time) {
+    if (vm.timer.seconds < records.time) {
       this.newBest[0].classList.remove("hideEl"); // show new record
-      this.newBest[0].lastElementChild.innerHTML = `(Record broke: ${vm.timer.timeFormat(model.record.time)})` // old time record
-      model.record.time = vm.timer.seconds;
-      view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
-      model.localRecord.saveRecord(model.record.time, model.record.moves);
+      this.newBest[0].lastElementChild.innerHTML = `(Record broke: ${vm.timer.timeFormat(records.time)})` // old time record
+      records.time = vm.timer.seconds;
+      view.timeRecord.innerHTML = vm.timer.timeFormat(records.time);
+      vm.saveRecords(records.time, records.moves);
     }
     else {
       this.newBest[0].classList.add("hideEl"); // no time record broke
     }
-    if (vm.gameMoves < model.record.moves) {
+    if (vm.gameMoves < records.moves) {
       this.newBest[1].classList.remove("hideEl"); // show new record
-      this.newBest[1].lastElementChild.innerHTML = `(Record broke: ${model.record.moves})`; // old move record
-      if (model.record.moves === 999) { // if its the first time ever played the game
-        this.endMsg.innerText = `Less mistakes will grant you higher wash temprature = more stars. To clean your records press C on the keyboard. Otherwise:`;
+      this.newBest[1].lastElementChild.innerHTML = `(Record broke: ${records.moves})`; // old move record
+      if (records.moves === 999) { // if its the first time ever played the game
         this.newBest[0].lastElementChild.innerHTML = "Your record will be saved!";
         this.newBest[1].lastElementChild.innerHTML = "Less moves = you get clenaer!";
-        }
-      model.record.moves = vm.gameMoves;
-      view.movesRecord.innerHTML = model.record.moves;
-      model.localRecord.saveRecord(model.record.time, model.record.moves);
+        this.endMsg.innerText = `Less mistakes will grant you higher wash temprature = more stars. To clean your records press C on the keyboard. Otherwise:`;
+      }
+      records.moves = vm.gameMoves;
+      view.movesRecord.innerHTML = records.moves;
+      vm.saveRecords(records.time, records.moves);
     } 
     else {
       this.newBest[1].classList.add("hideEl"); // no moves record broke
     }
-    model.record.rate = view.gameRate;
+    model.record.rate = view.gameRate;  /* needs refreshment: maybe split with the vm */
   },
+  popWin:function() {
+    this.endScreen.classList.toggle("hideEl");
+  },
+  playAgain: function() {
+    viewPopUp.endScore[0].innerHTML = view.time.innerText; //vm.gameTime; // Game Time
+    viewPopUp.endScore[1].innerHTML = view.moves.innerText; //vm.gameMoves; // Game Moves 
+    viewPopUp.endTemp[0].innerText = tempGreet[(view.gameRate-1)][0];
+    viewPopUp.endTemp[1].innerText = tempGreet[(view.gameRate-1)][1];
+
+    viewPopUp.endTemp[2].textContent = "";            // create amount of stars
+    for (let i = 0; i < view.gameRate; i++){
+      viewPopUp.endTemp[2].textContent += "🌟 ";
+    }
+    viewPopUp.popWin();   // shows the pop up
+    viewPopUp.buttonSpin.onclick = function(){
+      viewPopUp.popWin();
+        view.resetGame();
+    }
+    viewPopUp.buttonLearn.onclick = function(){
+      viewPopUp.popWin();
+        view.explainCards.show();
+    }  
+  }
 };
 
 

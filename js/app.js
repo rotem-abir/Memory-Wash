@@ -300,6 +300,96 @@ let speedEnd;
 //     }
 // };
 
+
+/*
+*   START game
+*/
+
+// let delay = 1500;
+// function cardsReset(delay) {
+//     vm.picked = 0;
+//     vm.remaining = 8;
+
+//     for (const card of vm.cards) {
+//         card.classList.remove("pick", "solved", "closed");
+//         card.firstElementChild.classList.remove("hide");
+//     }
+//     setTimeout(function() {
+//         for (const card of vm.cards) {
+//             card.classList.add("closed");
+//             card.firstElementChild.classList.add("hide");
+//         }
+//     }, delay);
+// }
+
+// function resetGame() {
+//     vm.buildDeck(model.deckData);
+//     vm.scoreReset();
+//     view.starsReset();
+//     view.explainCards.hide();
+//     view.cardsReset(view.delay);
+//     viewPopUp.endMsg.innerText = "";
+// }
+
+
+/*
+*   POPUP screen
+*/
+
+// const endScore = viewPopUp.endScreen.querySelectorAll(".endScore");
+// const endTemp = viewPopUp.endScreen.querySelectorAll(".endTemp")
+// const buttonSpin = viewPopUp.endMsg.nextElementSibling;
+// const buttonLearn = buttonSpin.nextElementSibling;
+
+const tempGreet = [
+    ["30°C.", "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"],
+    ["40°C.", "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"],
+    ["50°C.", "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."],
+    ["60°C.", "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."],
+    ["90°C. Well done!", "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."]
+];
+
+// function popupWin() {
+//     viewPopUp.endScreen.classList.toggle("hideEl");
+// }
+
+// function playAgain() {
+//     viewPopUp.endScore[0].innerHTML = view.time.innerText; //vm.gameTime; // Game Time
+//     viewPopUp.endScore[1].innerHTML = view.moves.innerText; //vm.gameMoves; // Game Moves 
+//     viewPopUp.endTemp[0].innerText = tempGreet[(view.gameRate-1)][0];
+//     viewPopUp.endTemp[1].innerText = tempGreet[(view.gameRate-1)][1];
+
+//     viewPopUp.endTemp[2].textContent = "";            // create amount of stars
+//     for (let i = 0; i < view.gameRate; i++){
+//         viewPopUp.endTemp[2].textContent += "🌟 ";
+//     }
+//     viewPopUp.popWin();   // shows the pop up
+//     viewPopUp.buttonSpin.onclick = function(){
+//         viewPopUp.popWin();
+//         view.resetGame();
+//     }
+//     viewPopUp.buttonLearn.onclick = function(){
+//         viewPopUp.popWin();
+//         view.explainCards.show();
+//     }
+// }
+
+/*
+*   END game
+*/
+
+// function gameOver() {
+//     view.updatePanel(vm.timer.seconds, vm.gameMoves);
+//     vm.timer.pause();
+//     viewPopUp.updateRecords();
+//     vm.timer.seconds = 0; // prevets the pause button to work
+//     view.explainCards.show();
+//     setTimeout(viewPopUp.playAgain , 1000);
+//     if ((model.record.rate === 5)&&(model.record.moves < 10)) { // opens bonus level
+//         iddqd.gouranga();
+//     }
+// }
+
 /*
 *
 cards = vm.cards
@@ -337,104 +427,28 @@ endScreen = viewPopUp.endScreen
 newBest = viewPopUp.newBest
 endMsg = viewPopUp.endMsg
 recordUpdate = viewPopUp.updateRecords()
+*NEW* = vm.getRecords()
 
 picked = vm.picked
 remaining = vm.remaining
 matchCards = view.matchCards()
 board = view.board
-explainListen = view.explainListen
+explainListen = view.explainListen()
 explainCards = view.explainCards
 
+delay = view.delay
+cardsReset = view.cardsReset()
+resetGame = view.resetGame()
+
+endScore = viewPopUp.endScore
+endTemp = viewPopUp.endTemp
+buttonSpin = viewPopUp.buttonSpin
+buttonLearn = viewPopUp.buttonLearn
+popupWin = viewPopUp.popWin()
+playAgain = viewPopUp.playAgain()
+gameOver = vm.gameOver()
 *
 */
-
-/*
-*   START game
-*/
-
-let delay = 1500;
-function cardsReset(delay) {
-    vm.picked = 0;
-    vm.remaining = 8;
-
-    for (const card of vm.cards) {
-        card.classList.remove("pick", "solved", "closed");
-        card.firstElementChild.classList.remove("hide");
-    }
-    setTimeout(function() {
-        for (const card of vm.cards) {
-            card.classList.add("closed");
-            card.firstElementChild.classList.add("hide");
-        }
-    }, delay);
-}
-
-function resetGame() {
-    vm.buildDeck(model.deckData);
-    vm.scoreReset();
-    view.starsReset();
-    view.explainCards.hide();
-    cardsReset(delay);
-    viewPopUp.endMsg.innerText = "";
-}
-
-/*
-*   POPUP screen
-*/
-
-const endScore = viewPopUp.endScreen.querySelectorAll(".endScore");
-const endTemp = viewPopUp.endScreen.querySelectorAll(".endTemp")
-const buttonSpin = viewPopUp.endMsg.nextElementSibling;
-const buttonLearn = buttonSpin.nextElementSibling;
-
-const tempGreet = [
-    ["30°C.", "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"],
-    ["40°C.", "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"],
-    ["50°C.", "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."],
-    ["60°C.", "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."],
-    ["90°C. Well done!", "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."]
-];
-
-function popupWin() {
-    viewPopUp.endScreen.classList.toggle("hideEl")
-}
-
-function playAgain() {
-    endScore[0].innerHTML = view.time.innerText; //vm.gameTime; // Game Time
-    endScore[1].innerHTML = view.moves.innerText; //vm.gameMoves; // Game Moves 
-    endTemp[0].innerText = tempGreet[(view.gameRate-1)][0];
-    endTemp[1].innerText = tempGreet[(view.gameRate-1)][1];
-
-    endTemp[2].textContent = "";            // create amount of stars
-    for (let i = 0; i < view.gameRate; i++){
-        endTemp[2].textContent += "🌟 ";
-    }
-    popupWin();   // shows the pop up
-    buttonSpin.onclick = function(){
-        popupWin();
-        resetGame();
-    }
-    buttonLearn.onclick = function(){
-        popupWin();
-        view.explainCards.show();
-    }
-}
-
-/*
-*   END game
-*/
-
-function gameOver() {
-    view.updatePanel(vm.timer.seconds, vm.gameMoves);
-    vm.timer.pause();
-    viewPopUp.updateRecords();
-    vm.timer.seconds = 0; // prevets the pause button to work
-    view.explainCards.show();
-    setTimeout(playAgain , 1000);
-    if ((model.record.rate === 5)&&(model.record.moves < 10)) { // opens bonus level
-        iddqd.gouranga();
-    }
-}
 
 /*
 *   CARD checker
@@ -468,7 +482,7 @@ function cardChecker(evt) {
                 view.matchCards(firstCard, checkCard);
                 vm.checkRating(view.gameRate);
                 if (vm.remaining === 0) {
-                    gameOver();
+                    vm.gameOver();
                 }
             }
         }
@@ -494,7 +508,7 @@ panel.addEventListener('click', function(evt) {
             }
         }
         else if (check === "reset"){
-            resetGame();
+            view.resetGame();
             if (model.record.moves === 999) {   // if it's the first game
                 view.updateRecord(0, "00");
             }
@@ -545,7 +559,7 @@ const iddqd = {
     gouranga: function() {
         if (this.godmode === false) {
             this.godmode = true;
-            delay = 3000;               // make pre-game delay longer
+            view.delay = 3000;               // make pre-game delay longer
             vm.timer.interval = 1000;      // turn seconds into minutes
             this.moveRec = model.record.moves;  // keep records
             model.record.moves = 0;
@@ -565,7 +579,7 @@ const iddqd = {
         }
         else {                          // bring everything back
             this.godmode = false;
-            delay = 1500;
+            view.delay = 1500;
             vm.timer.interval = 16.66;
             model.record.moves = this.moveRec;
             model.record.time = this.timeRec;
