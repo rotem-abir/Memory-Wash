@@ -341,13 +341,13 @@ let speedEnd;
 // const buttonSpin = viewPopUp.endMsg.nextElementSibling;
 // const buttonLearn = buttonSpin.nextElementSibling;
 
-const tempGreet = [
-    ["30°C.", "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"],
-    ["40°C.", "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"],
-    ["50°C.", "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."],
-    ["60°C.", "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."],
-    ["90°C. Well done!", "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."]
-];
+// const tempGreet = [
+//     ["30°C.", "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"],
+//     ["40°C.", "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"],
+//     ["50°C.", "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."],
+//     ["60°C.", "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."],
+//     ["90°C. Well done!", "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."]
+// ];
 
 // function popupWin() {
 //     viewPopUp.endScreen.classList.toggle("hideEl");
@@ -390,134 +390,75 @@ const tempGreet = [
 //     }
 // }
 
-/*
-*
-cards = vm.cards
-deck = vm.deck
-stock = model.deckData
-shuffle() = vm.shuffleDeck()
-buildDeck() = vm.buildDeck()
-
-score = view.score
-stars = view.stars
-timeRecord = view.timeRecord
-time = view.time
-movesRecord = view.movesRecord
-moves = view.moves
-gameTime = *DELETED*
-gameMoves = vm.gameMoves
-scoreUpdate = view.updatePanel()
-scoreReset = vm.scoreReset()
-
-gameRate = view.gameRate
-tempSign = view.tempSign
-checkRating = vm.checkRating()
-starsReset = view.starsReset()
-timeFormat = vm.timer.timeFormat()
-seconds = vm.timer.seconds
-timer = vm.timer
-best = model.record
-
-saveLocalRecord = model.localRecord.saveRecord()
-readLoacalRecord = vm.readRecords()
-cleanLocalRecord = vm.deleteRecords()
-
-*NEW* = view.updateRecord()
-endScreen = viewPopUp.endScreen
-newBest = viewPopUp.newBest
-endMsg = viewPopUp.endMsg
-recordUpdate = viewPopUp.updateRecords()
-*NEW* = vm.getRecords()
-
-picked = vm.picked
-remaining = vm.remaining
-matchCards = view.matchCards()
-board = view.board
-explainListen = view.explainListen()
-explainCards = view.explainCards
-
-delay = view.delay
-cardsReset = view.cardsReset()
-resetGame = view.resetGame()
-
-endScore = viewPopUp.endScore
-endTemp = viewPopUp.endTemp
-buttonSpin = viewPopUp.buttonSpin
-buttonLearn = viewPopUp.buttonLearn
-popupWin = viewPopUp.popWin()
-playAgain = viewPopUp.playAgain()
-gameOver = vm.gameOver()
-*
-*/
 
 /*
 *   CARD checker
 */
 
-let firstCard;
-function cardChecker(evt) {
-    let checkCard = evt.target;
-    if (checkCard.nodeName === "LI") {
-        // If a card was clicked, start the Game
-        if (vm.timer.seconds === 0) {
-            vm.timer.start();
-            view.stars[4].classList.toggle("starOn");
-            view.tempSign.textContent = `${model.tempStock[(view.gameRate)]}`;   
-        }
-        //if the card is not already picked or solved, and if the game is running aka not paused
-        if (!(checkCard.classList.contains("pick", "solved")) && !(checkCard.classList.contains("solved")) && (vm.timer.running)) {
-            // if it's the first card
-            if (vm.picked === 0) {
-                vm.picked = 1;
-                checkCard.classList.add("pick");
-                checkCard.firstElementChild.classList.remove("hide");
-                firstCard = checkCard;
-            }
-            // if it's the second card
-            else if (vm.picked === 1) {
-                vm.picked = 2;
-                vm.gameMoves++;
-                checkCard.classList.add("pick");
-                checkCard.firstElementChild.classList.remove("hide");
-                view.matchCards(firstCard, checkCard);
-                vm.checkRating(view.gameRate);
-                if (vm.remaining === 0) {
-                    vm.gameOver();
-                }
-            }
-        }
-    }
-}
+// let firstCard;
+// function cardChecker(evt) {
+//     let checkCard = evt.target;
+//     if (checkCard.nodeName === "LI") {
+//         // If a card was clicked, start the Game
+//         if (vm.timer.seconds === 0) {
+//             vm.timer.start();
+//             view.stars[4].classList.toggle("starOn");
+//             view.tempSign.textContent = `${model.tempStock[(view.gameRate)]}`;   
+//         }
+//         //if the card is not already picked or solved, and if the game is running aka not paused
+//         if (!(checkCard.classList.contains("pick", "solved")) && !(checkCard.classList.contains("solved")) && (vm.timer.running)) {
+//             // if it's the first card
+//             if (vm.picked === 0) {
+//                 vm.picked = 1;
+//                 checkCard.classList.add("pick");
+//                 checkCard.firstElementChild.classList.remove("hide");
+//                 firstCard = checkCard;
+//             }
+//             // if it's the second card
+//             else if (vm.picked === 1) {
+//                 vm.picked = 2;
+//                 vm.gameMoves++;
+//                 checkCard.classList.add("pick");
+//                 checkCard.firstElementChild.classList.remove("hide");
+//                 view.matchCards(firstCard, checkCard);
+//                 vm.checkRating(view.gameRate);
+//                 if (vm.remaining === 0) {
+//                     vm.gameOver();
+//                 }
+//             }
+//         }
+//     }
+// }
 
 /*
 *   CONTROL panel
 */
 
-const panel = document.querySelector("div.panel");
-panel.addEventListener('click', function(evt) {
-    let checkClass = evt.target.classList;
-    checkClass = [...checkClass];
-    for (let check of checkClass) {     // check what was clicked on the pannel
-        if (check === "pause") {
-            vm.timer.pause();
-            if (!vm.timer.running) {       // toggle explanations according to game run/pause
-                view.explainCards.show();
-            }
-            else {
-                view.explainCards.hide();
-            }
-        }
-        else if (check === "reset"){
-            view.resetGame();
-            if (model.record.moves === 999) {   // if it's the first game
-                view.updateRecord(0, "00");
-            }
-        }
-        else if (check === "stars") {   // for mobile - equal to the button "c" . to clean the local memory
-            vm.deleteRecords();
-        }
-    }
-});
+// const panel = document.querySelector("div.panel");
+// panel.addEventListener('click', function(evt) {
+//     let checkClass = evt.target.classList;
+//     checkClass = [...checkClass];
+//     for (let check of checkClass) {     // check what was clicked on the pannel
+//         if (check === "pause") {
+//             vm.timer.pause();
+//             if (!vm.timer.running) {       // toggle explanations according to game run/pause
+//                 view.explainCards.show();
+//             }
+//             else {
+//                 view.explainCards.hide();
+//             }
+//         }
+//         else if (check === "reset"){
+//             view.resetGame();
+//             if (model.record.moves === 999) {   // if it's the first game
+//                 view.updateRecord(0, "00");
+//             }
+//         }
+//         else if (check === "stars") {   // for mobile - equal to the button "c" . to clean the local memory
+//             vm.deleteRecords();
+//         }
+//     }
+// });
 
 window.onkeyup = function(key) {
     if ((key.key == "g") || (key.key == "G")) {
@@ -542,7 +483,7 @@ console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!"
 *   RUN the game
 */
 
-view.board.addEventListener('click', cardChecker);
+view.board.addEventListener('click', vm.cardChecker);
 view.explainCards.show();
 vm.readRecords();
 // [model.record.time, model.record.moves] = vm.checkRecords();
@@ -630,4 +571,71 @@ explainListen(evt);
                                 cardChecker(evt);
                                     "control panel"
                                          gouranga();
+*/
+
+/*
+*
+cards = vm.cards
+deck = vm.deck
+stock = model.deckData
+shuffle() = vm.shuffleDeck()
+buildDeck() = vm.buildDeck()
+*NEW=* = view.updateDeck()
+
+score = view.score
+stars = view.stars
+timeRecord = view.timeRecord
+time = view.time
+movesRecord = view.movesRecord
+moves = view.moves
+gameTime = *DELETED*
+gameMoves = vm.gameMoves
+scoreUpdate = view.updatePanel()
+scoreReset = vm.scoreReset()
+
+gameRate = view.gameRate
+tempSign = view.tempSign
+checkRating = vm.checkRating()
+starsReset = view.starsReset()
+timeFormat = vm.timer.timeFormat()
+seconds = vm.timer.seconds
+timer = vm.timer
+best = model.record
+
+saveLocalRecord = model.localRecord.saveRecord()
+readLoacalRecord = vm.readRecords()
+cleanLocalRecord = vm.deleteRecords()
+
+*NEW* = view.updateRecord()
+endScreen = viewPopUp.endScreen
+newBest = viewPopUp.newBest
+endMsg = viewPopUp.endMsg
+recordUpdate = viewPopUp.updateRecords()
+*NEW* = vm.getRecords()
+
+picked = vm.picked
+remaining = vm.remaining
+matchCards = view.matchCards()
+board = view.board
+explainListen = view.explainListen()
+explainCards = view.explainCards
+
+delay = view.delay
+cardsReset = view.cardsReset()
+resetGame = view.resetGame()
+
+endScore = viewPopUp.endScore
+endTemp = viewPopUp.endTemp
+buttonSpin = viewPopUp.buttonSpin
+buttonLearn = viewPopUp.buttonLearn
+popupWin = viewPopUp.popWin()
+tempGreet = model.tempGreet
+playAgain = viewPopUp.playAgain()
+gameOver = vm.gameOver()
+
+cardChecker = vm.cardChecker()
+firstCard = vm.firstCard
+*NEW* = view.controlPanel()
+
+*
 */
