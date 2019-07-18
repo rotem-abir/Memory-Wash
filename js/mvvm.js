@@ -1,3 +1,7 @@
+'use strict';
+let speedBegin = performance.now();
+let speedEnd;
+
 const model = { 
   deckData: [],
   record: {
@@ -60,7 +64,6 @@ const model = {
   }
 };
 
-
 const vm = {
   init: function() {
     this.cards = document.getElementsByClassName("card");
@@ -73,6 +76,7 @@ const vm = {
     model.init();
     view.init();
     viewPopUp.init();
+    vm.readRecords();
   },
   getRecords: function() {
     return model.record;
@@ -230,7 +234,6 @@ const vm = {
   }
 };
 
-
 const view = {  
   init: function() {
     this.score = Array.from(document.getElementsByClassName("count"));
@@ -245,6 +248,9 @@ const view = {
     this.delay = 1500;
     this.panel = document.querySelector("div.panel");
     this.panel.addEventListener('click', view.controlPanel);
+    this.board.addEventListener('click', vm.cardChecker);
+    this.explainCards.show();
+    this.keyboardControl();
   },
   updateDeck: function(pairsDeck) {
     for (let i = 0; i < 16; i++) {
@@ -347,9 +353,21 @@ const view = {
         vm.deleteRecords();
       }
     }
+  },
+  keyboardControl: function() {
+    window.onkeyup = function(key) {
+      if ((key.key == "g") || (key.key == "G")) {
+        iddqd.gouranga();
+      }
+      if ((key.key == "c") || (key.key == "C")) {
+        vm.deleteRecords();
+      }
+      if ((key.key == "k") || (key.key == "K")) {
+        viewPopUp.endScreen.classList.toggle("hideEl")
+      }
+    } 
   }
 };
-
 
 const viewPopUp = {
   init: function() {
@@ -421,5 +439,53 @@ const viewPopUp = {
   }
 };
 
+const iddqd = {
+  godmode: false,
+  moveRec: 8,
+  timeRec: 6,
+  starRec: 1,
+  gouranga: function() {
+    if (this.godmode === false) {
+      this.godmode = true;
+      view.delay = 3000;               // make pre-game delay longer
+      vm.timer.interval = 1000;      // turn seconds into minutes
+      this.moveRec = model.record.moves;  // keep records
+      model.record.moves = 0;
+      this.timeRec = model.record.time;
+      model.record.time = 0;
+      this.starRec = model.record.rate;
+      model.record.rate = 6;
+      view.timeRecord.innerHTML = "BONUS!";    // change score display
+      view.movesRecord.innerHTML = "☺";
+      view.tempSign.textContent = "verified_user";
+      for (const star of view.stars) {        // twist rating
+        star.classList.toggle("starOn");
+      }
+      for (const card of vm.cards) {         // show cards
+        card.firstElementChild.classList.add("cheat"); 
+      }
+    }
+    else {                          // bring everything back
+      this.godmode = false;
+      view.delay = 1500;
+      vm.timer.interval = 16.66;
+      model.record.moves = this.moveRec;
+      model.record.time = this.timeRec;
+      model.record.rate = this.starRec;
+      view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
+      view.movesRecord.innerHTML = model.record.moves;
+      view.tempSign.textContent = `${model.tempStock[view.gameRate]}`; 
+      for (const star of view.stars) {
+        star.classList.toggle("starOn");
+      }
+      for (const card of vm.cards) {
+        card.firstElementChild.classList.remove("cheat"); 
+      }
+    }
+  }
+};
 
 vm.init();
+
+speedEnd = performance.now();
+console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!");

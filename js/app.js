@@ -1,8 +1,8 @@
-'use strict';
-var o = { p: 1, p: 2 };
+// 'use strict';
+// var o = { p: 1, p: 2 };
 
-let speedBegin = performance.now();
-let speedEnd;
+// let speedBegin = performance.now();
+// let speedEnd;
 
 /*
 *   SHUFFLE deck
@@ -460,83 +460,83 @@ let speedEnd;
 //     }
 // });
 
-window.onkeyup = function(key) {
-    if ((key.key == "g") || (key.key == "G")) {
-        iddqd.gouranga();
-    }
-    if ((key.key == "c") || (key.key == "C")) {
-        vm.deleteRecords();
-    }
-    if ((key.key == "k") || (key.key == "K")) {
-        viewPopUp.endScreen.classList.toggle("hideEl")
-    }
-}
+// window.onkeyup = function(key) {
+//     if ((key.key == "g") || (key.key == "G")) {
+//         iddqd.gouranga();
+//     }
+//     if ((key.key == "c") || (key.key == "C")) {
+//         vm.deleteRecords();
+//     }
+//     if ((key.key == "k") || (key.key == "K")) {
+//         viewPopUp.endScreen.classList.toggle("hideEl")
+//     }
+// }
 
 /*
 *   PREFORMANCE test (code: 0.60~, gmae 1.35~)
 */
 
-speedEnd = performance.now();
-console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!");
+// speedEnd = performance.now();
+// console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!");
 
 /*
 *   RUN the game
 */
 
-view.board.addEventListener('click', vm.cardChecker);
-view.explainCards.show();
-vm.readRecords();
-// [model.record.time, model.record.moves] = vm.checkRecords();
+// view.board.addEventListener('click', vm.cardChecker);
+// view.explainCards.show();
+// vm.readRecords();
+//////// [model.record.time, model.record.moves] = vm.checkRecords();
 
 /*
 *   Bonus level
 */
 
-const iddqd = {
-    godmode: false,
-    moveRec: 8,
-    timeRec: 6,
-    starRec: 1,
-    gouranga: function() {
-        if (this.godmode === false) {
-            this.godmode = true;
-            view.delay = 3000;               // make pre-game delay longer
-            vm.timer.interval = 1000;      // turn seconds into minutes
-            this.moveRec = model.record.moves;  // keep records
-            model.record.moves = 0;
-            this.timeRec = model.record.time;
-            model.record.time = 0;
-            this.starRec = model.record.rate;
-            model.record.rate = 6;
-            view.timeRecord.innerHTML = "BONUS!";    // change score display
-            view.movesRecord.innerHTML = "☺";
-            view.tempSign.textContent = "verified_user";
-            for (const star of view.stars) {        // twist rating
-                star.classList.toggle("starOn");
-            }
-            for (const card of vm.cards) {         // show cards
-                card.firstElementChild.classList.add("cheat"); 
-            }
-        }
-        else {                          // bring everything back
-            this.godmode = false;
-            view.delay = 1500;
-            vm.timer.interval = 16.66;
-            model.record.moves = this.moveRec;
-            model.record.time = this.timeRec;
-            model.record.rate = this.starRec;
-            view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
-            view.movesRecord.innerHTML = model.record.moves;
-            view.tempSign.textContent = `${model.tempStock[view.gameRate]}`; 
-            for (const star of view.stars) {
-                star.classList.toggle("starOn");
-            }
-            for (const card of vm.cards) {
-                card.firstElementChild.classList.remove("cheat"); 
-            }
-        }
-    }
-};
+// const iddqd = {
+//     godmode: false,
+//     moveRec: 8,
+//     timeRec: 6,
+//     starRec: 1,
+//     gouranga: function() {
+//         if (this.godmode === false) {
+//             this.godmode = true;
+//             view.delay = 3000;               // make pre-game delay longer
+//             vm.timer.interval = 1000;      // turn seconds into minutes
+//             this.moveRec = model.record.moves;  // keep records
+//             model.record.moves = 0;
+//             this.timeRec = model.record.time;
+//             model.record.time = 0;
+//             this.starRec = model.record.rate;
+//             model.record.rate = 6;
+//             view.timeRecord.innerHTML = "BONUS!";    // change score display
+//             view.movesRecord.innerHTML = "☺";
+//             view.tempSign.textContent = "verified_user";
+//             for (const star of view.stars) {        // twist rating
+//                 star.classList.toggle("starOn");
+//             }
+//             for (const card of vm.cards) {         // show cards
+//                 card.firstElementChild.classList.add("cheat"); 
+//             }
+//         }
+//         else {                          // bring everything back
+//             this.godmode = false;
+//             view.delay = 1500;
+//             vm.timer.interval = 16.66;
+//             model.record.moves = this.moveRec;
+//             model.record.time = this.timeRec;
+//             model.record.rate = this.starRec;
+//             view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
+//             view.movesRecord.innerHTML = model.record.moves;
+//             view.tempSign.textContent = `${model.tempStock[view.gameRate]}`; 
+//             for (const star of view.stars) {
+//                 star.classList.toggle("starOn");
+//             }
+//             for (const card of vm.cards) {
+//                 card.firstElementChild.classList.remove("cheat"); 
+//             }
+//         }
+//     }
+// };
 
 /*
 shuffle(stock);
@@ -636,6 +636,7 @@ gameOver = vm.gameOver()
 cardChecker = vm.cardChecker()
 firstCard = vm.firstCard
 *NEW* = view.controlPanel()
+*NEW* = view.keyboardControl()
 
 *
 */
