@@ -1,3 +1,7 @@
+'use strict';
+let speedBegin = performance.now();
+let speedEnd;
+
 const model = { 
   deckData: [],
   record: {
@@ -12,6 +16,13 @@ const model = {
     "sync_problem",
     "sync",
     "whatshot"
+  ],
+  tempGreet: [
+    ["30°C.", "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"],
+    ["40°C.", "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"],
+    ["50°C.", "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."],
+    ["60°C.", "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."],
+    ["90°C. Well done!", "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."]
   ],
   localRecord: {
     saveRecord: function(time, moves) {
@@ -53,16 +64,25 @@ const model = {
   }
 };
 
-
 const vm = {
   init: function() {
     this.cards = document.getElementsByClassName("card");
-    this.deck = [...this.cards];
-    // this.gameTime = 0;
+    this.deck = [...this.cards]; /* needs to be in the view */
+    // this.gameTime = 0; /* this.timer.reset() - for safety?*/
     this.gameMoves = "00";
+    this.picked = 0;          // open cards
+    this.remaining = 8;       // pairs left
+    this.firstCard;
     model.init();
     view.init();
     viewPopUp.init();
+    vm.readRecords();
+  },
+  getRecords: function() {
+    return model.record;
+  },
+  saveRecords: function(time, moves) {
+    model.localRecord.saveRecord(time, moves);
   },
   shuffleDeck: function(array) {
     let m = array.length, t, i;               // While there remain elements to shuffle…
@@ -88,7 +108,8 @@ const vm = {
     view.updateDeck(pairsStock);
   },
   scoreReset: function() {
-    vm.gameMoves = "00";
+    this.gameMoves = "00";
+    this.timer.reset();
     view.updatePanel(0, vm.gameMoves);
   },
   checkRating: function (rating) {
@@ -166,9 +187,52 @@ const vm = {
         }
       }
     }
-  }  
+  },
+  gameOver: function() {
+    view.updatePanel(vm.timer.seconds, vm.gameMoves);
+    this.timer.pause();
+    viewPopUp.updateRecords();
+    this.timer.seconds = 0; // prevets the pause button to work
+    view.explainCards.show();
+    setTimeout(viewPopUp.playAgain , 1000);
+    if ((model.record.rate === 5)&&(model.record.moves < 10)) { // opens bonus level
+        iddqd.gouranga();
+    }  
+  },
+  cardChecker: function (evt) {
+    let checkCard = evt.target;
+    if (checkCard.nodeName === "LI") {
+      // If a card was clicked, start the Game
+      if (vm.timer.seconds === 0) {
+        vm.timer.start();
+        view.stars[4].classList.toggle("starOn");
+        view.tempSign.textContent = `${model.tempStock[(view.gameRate)]}`;   
+      }
+      //if the card is not already picked or solved, and if the game is running aka not paused
+      if (!(checkCard.classList.contains("pick", "solved")) && !(checkCard.classList.contains("solved")) && (vm.timer.running)) {
+        // if it's the first card
+        if (vm.picked === 0) {
+          vm.picked = 1;
+          checkCard.classList.add("pick");
+          checkCard.firstElementChild.classList.remove("hide");
+          vm.firstCard = checkCard;
+        }
+        // if it's the second card
+        else if (vm.picked === 1) {
+          vm.picked = 2;
+          vm.gameMoves++;
+          checkCard.classList.add("pick");
+          checkCard.firstElementChild.classList.remove("hide");
+          view.matchCards(vm.firstCard, checkCard);
+          vm.checkRating(view.gameRate);
+          if (vm.remaining === 0) {
+            vm.gameOver();
+          }
+        }
+      }
+    }
+  }
 };
-
 
 const view = {  
   init: function() {
@@ -180,6 +244,13 @@ const view = {
     this.moves = this.score[3];
     this.gameRate = 5;
     this.tempSign = this.stars[0].parentElement.parentElement.lastElementChild.lastElementChild; // temprature sign
+    this.board = document.querySelector(".board");
+    this.delay = 1500;
+    this.panel = document.querySelector("div.panel");
+    this.panel.addEventListener('click', view.controlPanel);
+    this.board.addEventListener('click', vm.cardChecker);
+    this.explainCards.show();
+    this.keyboardControl();
   },
   updateDeck: function(pairsDeck) {
     for (let i = 0; i < 16; i++) {
@@ -191,61 +262,230 @@ const view = {
     this.time.innerHTML = time;
     this.moves.innerHTML = moves;
   },
+  updateRecord: function(time, moves) {
+    time = vm.timer.timeFormat(time);
+    this.timeRecord.innerHTML = time;
+    this.movesRecord.innerHTML = moves;
+  },
   starsReset: function() {
     this.gameRate = 5;
     for (const star of view.stars) {
       star.classList.remove("starOn");
     }
   },
-  updateRecord: function(time, moves) {
-    time = vm.timer.timeFormat(time);
-    this.timeRecord.innerHTML = time;
-    this.movesRecord.innerHTML = moves;
+  cardsReset: function (delay) {
+    vm.picked = 0;
+    vm.remaining = 8;
+
+    for (const card of vm.cards) {
+      card.classList.remove("pick", "solved", "closed");
+      card.firstElementChild.classList.remove("hide");
+    }
+    setTimeout(function() {
+      for (const card of vm.cards) {
+        card.classList.add("closed");
+        card.firstElementChild.classList.add("hide");
+      }
+    }, view.delay);
+  },
+  matchCards: function(a, b) {
+    if (a.innerHTML === b.innerHTML ) {
+      a.classList.add("solved");
+      b.classList.add("solved");
+      vm.remaining--;
+      vm.picked = 0; // happens directly, as no time delay is needed for correct guess
+    }
+    else {
+      setTimeout(function () {
+        a.classList.remove("pick");
+        b.classList.remove("pick");
+        a.firstElementChild.classList.add("hide"); 
+        b.firstElementChild.classList.add("hide");
+        vm.picked = 0;   // must be after the delay, to prevet card picking during this time
+      }, 650)
+    }
+  },
+  explainListen: function (evt) {
+    let isImg = evt.target;
+    if ((isImg.nodeName === "IMG") && (!(vm.timer.running))){
+      isImg.classList.toggle("explain");
+      isImg.nextSibling.classList.toggle("hide");
+    }
+  },
+  explainCards: {
+    show: function() {
+      view.board.addEventListener('mouseover', view.explainListen);
+      view.board.addEventListener('mouseout', view.explainListen);
+    },
+    hide: function() {
+      view.board.removeEventListener('mouseover', view.explainListen);
+      view.board.removeEventListener('mouseout', view.explainListen);
+    }
+  },
+  resetGame: function() {
+    vm.buildDeck(model.deckData);
+    vm.scoreReset();
+    view.starsReset();
+    view.explainCards.hide();
+    view.cardsReset(view.delay);
+    viewPopUp.endMsg.innerText = "";
+  },
+  controlPanel: function(evt) {
+    let checkClass = evt.target.classList;
+    checkClass = [...checkClass];
+    for (let check of checkClass) {     // check what was clicked on the pannel
+      if (check === "pause") {
+        vm.timer.pause();
+        if (!vm.timer.running) {       // toggle explanations according to game run/pause
+          view.explainCards.show();
+        }
+        else {
+          view.explainCards.hide();
+        }
+      }
+      else if (check === "reset"){
+        view.resetGame();
+        if (model.record.moves === 999) {   // if it's the first game
+          view.updateRecord(0, "00");
+        }
+      }
+      else if (check === "stars") {   // for mobile - equal to the button "c" . to clean the local memory
+        vm.deleteRecords();
+      }
+    }
+  },
+  keyboardControl: function() {
+    window.onkeyup = function(key) {
+      if ((key.key == "g") || (key.key == "G")) {
+        iddqd.gouranga();
+      }
+      if ((key.key == "c") || (key.key == "C")) {
+        vm.deleteRecords();
+      }
+      if ((key.key == "k") || (key.key == "K")) {
+        viewPopUp.endScreen.classList.toggle("hideEl")
+      }
+    } 
   }
 };
-
 
 const viewPopUp = {
   init: function() {
     this.endScreen = document.querySelector(".endScreen"); // the game-over popup screen
     this.newBest = this.endScreen.querySelectorAll(".newBest"); // "new best" elemnts on the popup screen
     this.endMsg = this.endScreen.firstElementChild.lastElementChild.firstElementChild; // the last message on the popup screen
+    this.endScore = this.endScreen.querySelectorAll(".endScore");
+    this.endTemp = this.endScreen.querySelectorAll(".endTemp")
+    this.buttonSpin = this.endMsg.nextElementSibling;
+    this.buttonLearn = this.buttonSpin.nextElementSibling;
   },
   updateRecords: function() {
-    if (view.gameRate > model.record.rate) {
+    let records = vm.getRecords();
+    if (view.gameRate > records.rate) {
       this.endMsg.innerText = `Fairly Clean! You're getting warmer.`
-      if ((model.record.rate === 0 )&&(model.record.moves !== 999)) {                  // if it's a returning player
+      if ((records.rate === 0 )&&(records.moves !== 999)) {                  // if it's a returning player
         this.endMsg.innerHTML = `Good to see you again! Remeber, for best results always combine your wash with a good laundry detergent.`;
       }
     }
-    if (vm.timer.seconds < model.record.time) {
+    if (vm.timer.seconds < records.time) {
       this.newBest[0].classList.remove("hideEl"); // show new record
-      this.newBest[0].lastElementChild.innerHTML = `(Record broke: ${vm.timer.timeFormat(model.record.time)})` // old time record
-      model.record.time = vm.timer.seconds;
-      view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
-      model.localRecord.saveRecord(model.record.time, model.record.moves);
+      this.newBest[0].lastElementChild.innerHTML = `(Record broke: ${vm.timer.timeFormat(records.time)})` // old time record
+      records.time = vm.timer.seconds;
+      view.timeRecord.innerHTML = vm.timer.timeFormat(records.time);
+      vm.saveRecords(records.time, records.moves);
     }
     else {
       this.newBest[0].classList.add("hideEl"); // no time record broke
     }
-    if (vm.gameMoves < model.record.moves) {
+    if (vm.gameMoves < records.moves) {
       this.newBest[1].classList.remove("hideEl"); // show new record
-      this.newBest[1].lastElementChild.innerHTML = `(Record broke: ${model.record.moves})`; // old move record
-      if (model.record.moves === 999) { // if its the first time ever played the game
-        this.endMsg.innerText = `Less mistakes will grant you higher wash temprature = more stars. To clean your records press C on the keyboard. Otherwise:`;
+      this.newBest[1].lastElementChild.innerHTML = `(Record broke: ${records.moves})`; // old move record
+      if (records.moves === 999) { // if its the first time ever played the game
         this.newBest[0].lastElementChild.innerHTML = "Your record will be saved!";
         this.newBest[1].lastElementChild.innerHTML = "Less moves = you get clenaer!";
-        }
-      model.record.moves = vm.gameMoves;
-      view.movesRecord.innerHTML = model.record.moves;
-      model.localRecord.saveRecord(model.record.time, model.record.moves);
+        this.endMsg.innerText = `Less mistakes will grant you higher wash temprature = more stars. To clean your records press C on the keyboard. Otherwise:`;
+      }
+      records.moves = vm.gameMoves;
+      view.movesRecord.innerHTML = records.moves;
+      vm.saveRecords(records.time, records.moves);
     } 
     else {
       this.newBest[1].classList.add("hideEl"); // no moves record broke
     }
-    model.record.rate = view.gameRate;
+    model.record.rate = view.gameRate;  /* needs refreshment: maybe split with the vm */
   },
+  popWin:function() {
+    this.endScreen.classList.toggle("hideEl");
+  },
+  playAgain: function() {
+    viewPopUp.endScore[0].innerHTML = view.time.innerText; //vm.gameTime; // Game Time
+    viewPopUp.endScore[1].innerHTML = view.moves.innerText; //vm.gameMoves; // Game Moves 
+    viewPopUp.endTemp[0].innerText = model.tempGreet[(view.gameRate-1)][0];
+    viewPopUp.endTemp[1].innerText = model.tempGreet[(view.gameRate-1)][1];
+
+    viewPopUp.endTemp[2].textContent = "";            // create amount of stars
+    for (let i = 0; i < view.gameRate; i++){
+      viewPopUp.endTemp[2].textContent += "🌟 ";
+    }
+    viewPopUp.popWin();   // shows the pop up
+    viewPopUp.buttonSpin.onclick = function(){
+      viewPopUp.popWin();
+        view.resetGame();
+    }
+    viewPopUp.buttonLearn.onclick = function(){
+      viewPopUp.popWin();
+        view.explainCards.show();
+    }  
+  }
 };
 
+const iddqd = {
+  godmode: false,
+  moveRec: 8,
+  timeRec: 6,
+  starRec: 1,
+  gouranga: function() {
+    if (this.godmode === false) {
+      this.godmode = true;
+      view.delay = 3000;               // make pre-game delay longer
+      vm.timer.interval = 1000;      // turn seconds into minutes
+      this.moveRec = model.record.moves;  // keep records
+      model.record.moves = 0;
+      this.timeRec = model.record.time;
+      model.record.time = 0;
+      this.starRec = model.record.rate;
+      model.record.rate = 6;
+      view.timeRecord.innerHTML = "BONUS!";    // change score display
+      view.movesRecord.innerHTML = "☺";
+      view.tempSign.textContent = "verified_user";
+      for (const star of view.stars) {        // twist rating
+        star.classList.toggle("starOn");
+      }
+      for (const card of vm.cards) {         // show cards
+        card.firstElementChild.classList.add("cheat"); 
+      }
+    }
+    else {                          // bring everything back
+      this.godmode = false;
+      view.delay = 1500;
+      vm.timer.interval = 16.66;
+      model.record.moves = this.moveRec;
+      model.record.time = this.timeRec;
+      model.record.rate = this.starRec;
+      view.timeRecord.innerHTML = vm.timer.timeFormat(model.record.time);
+      view.movesRecord.innerHTML = model.record.moves;
+      view.tempSign.textContent = `${model.tempStock[view.gameRate]}`; 
+      for (const star of view.stars) {
+        star.classList.toggle("starOn");
+      }
+      for (const card of vm.cards) {
+        card.firstElementChild.classList.remove("cheat"); 
+      }
+    }
+  }
+};
 
 vm.init();
+
+speedEnd = performance.now();
+console.log("CODE: Ready in " + (speedEnd - speedBegin).toFixed(2) + " seconds!");
