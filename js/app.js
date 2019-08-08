@@ -278,7 +278,6 @@
 *   EXPLAINATION exposer
 */
 
-
 // const board = document.querySelector(".board");
 
 // function explainListen (evt) {
@@ -299,7 +298,6 @@
 //         view.board.removeEventListener('mouseout', view.explainListen);
 //     }
 // };
-
 
 /*
 *   START game
@@ -326,11 +324,11 @@
 //     vm.buildDeck(model.deckData);
 //     vm.scoreReset();
 //     view.starsReset();
+////// timer.reset();
 //     view.explainCards.hide();
 //     view.cardsReset(view.delay);
 //     viewPopUp.endMsg.innerText = "";
 // }
-
 
 /*
 *   POPUP screen
@@ -389,7 +387,6 @@
 //         iddqd.gouranga();
 //     }
 // }
-
 
 /*
 *   CARD checker
@@ -637,6 +634,5 @@ cardChecker = vm.cardChecker()
 firstCard = vm.firstCard
 *NEW* = view.controlPanel()
 *NEW* = view.keyboardControl()
-
 *
 */
