@@ -39,7 +39,6 @@ const model = {
         timeRead = parseInt(timeRead);
         moveRead = parseInt(moveRead);
         [model.record.time, model.record.moves] = [timeRead, moveRead];
-        // vm.scoreReset();
         view.updatePanel(0, 0); /* need to be somewhere else */
       }
       else {
@@ -69,7 +68,6 @@ const vm = {
   init: function() {
     this.cards = document.getElementsByClassName("card");
     this.deck = [...this.cards]; /* needs to be in the view */
-    // this.gameTime = 0; /* this.timer.reset() - for safety?*/
     this.gameMoves = "00";
     this.picked = 0;          // open cards
     this.remaining = 8;       // pairs left
@@ -139,7 +137,6 @@ const vm = {
     interval: 17, // seconds based on 1000/60, to imitate time foramt of launry machine. For "minutes:seocnds" display, use 1000
     timeOn: function() {
       vm.timer.seconds++;
-      // vm.gameTime = vm.timer.timeFormat(vm.timer.seconds);
       view.updatePanel(vm.timer.seconds, vm.gameMoves);
     },
     start: function() {
