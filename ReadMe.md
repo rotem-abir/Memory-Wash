@@ -20,7 +20,7 @@ The goal is to finish clean, with the highest washing temprature.
 | :--------- | :----- | :------------- |
 | HTML       | root   | index.html     |
 | CSS        | \css   | style.css      |
-| JavaScript | \js    | app.js         |
+| JavaScript | \js    | mvvm.js         |
 | Pictures   | \img   | SymbolName.jpg |
 | Markdown   | root   | ReadMe..md    |
 
@@ -33,47 +33,61 @@ The goal is to finish clean, with the highest washing temprature.
 - Try to match cards against the clock
 - Get info regarding your match
 
-## Functions Table of Content:
+## Table of Content - main objects and functions:
 
 ```
-shuffle(stock);
-    buildDeck(deck);
-
-scoreUpdate();
-    scoreReset();
-        checkRating(gameRate);
-            starsReset();
-
-timeFormat(seconds);
-    timeOn();
-        timer.start();
-            timer.pause();
-            timer.reset(); 
-       
-best.time.moves.rate
-    saveLocalRecord(time, moves);
-        readLoacalRecord();
-            cleanLocalRecord();
-                recordUpdate();	
-
-matchCards(a, b);
-explainListen(evt);
-    explainCards.hide();
-    explainCards.show();
-
-    cardsReset(delay);    
-                resetGame();
-                    playAgain();
-                        gameOver();
-                            cardChecker(evt);
-                                "control panel"
-                                    gouranga();               
+1. model{}
+2. vm{}
+3. view{}
+4. viewPopUp{}
+# iddqd{}
 ```
 
+### 1. model{}
 
-**Save the deck, create a stock.**
+Holds all the data for the game, as the model in the MVVM.
 
-`shuffle(array);`
+`record{}`
+- Holds the time record
+- Holds the move count record
+- Holds the last match rating
+
+`localRecord.saveRecord()`
+
+- Save the time and moves counters into the local memory
+
+`localRecord.readRecord()`
+
+- Read the records from local memory
+- If not null: Reset the high-score as the game was never played
+- If null, means it's the first game. Keep default values
+
+`localRecord.cleanRecord()`
+
+- deleting all data in the local memory (cache)
+
+`init()`
+
+- getting the cards data (currently from the HTML, in the future via JSON)
+
+
+### 2. vm{}
+
+`init()`
+
+- Getting the cards, building a deck, reseting all current game data
+- Initiating the model, the view (the pop-up view)
+- Reading local records from cache
+
+`getRecords()`
+
+- Serving the local records from the model
+
+`saveRecords(time, moves)`
+
+- Updating the time and moves from the game to the model
+
+`shuffleDeck(array)`
 
 - Takes an array and mixes it's elements.
 
@@ -84,17 +98,13 @@ explainListen(evt);
 - Shuffle the new deck
 - Update in the game
 
-**Save the score/high-score elements.**
-
-`scoreUpdate();`
-
-- Update the game score panel.
-
-`scoreReset();`
+`scoreReset()`
 
 - Reset the game score panel.
 
-`checkRating(gameRate);`
+`checkRating(gameRate)`
+
+- Takes the current game rating (1 to 5) and updates by this chart:
 
 | Temprature | Stars | Moves   | Mistakes |
 | :--------: | :---: | :------ | :------- |
@@ -104,93 +114,34 @@ explainListen(evt);
 |     40     |   2   | 16 - 18 | max. 10  |
 |     30     |   1   | 19+     | min. 11  |
 
-`starsReset();`
+`readRecords()`
 
-- Reset game rating/stars
+- Update and change high-score panel by the local record
 
-`timeFormat(number)`
-
-- Turn numbers to *XX:XX* time format.
-- Built as a clock of "*minutes:seconds*", to imitate real laundry machine clock.
-- In the game, will display "*seconds:seconds/60"*
-- In the game time display, each "centisecond" is actually ~17 centiseconds.
-
-`timer {}`
-
-- `timer.timeOn();`
-Counts the time, updating the display.
-- `timer.start();`
-Ignites the game time mechanism.
-- `timer.pause();`
-Pause the game timer or resumes it.
-- `timer.reset();`
-Stops and restarts the game timer.
-
-`best {}`
-- Holds the time record
-- Holds the move count record
-- Holds the last match rating
-
-`saveLocalRecord(time, moves);`
-
-- Save the time and moves counters into the local memory
-
-`readLoacalRecord();`
-
-- Read the records from local memory
-- If not null: update and change high-score panel
-- If null, means it's the first game. Keep default values
-
-`cleanLocalRecord();`
+`deleteRecords()`
 
 - Good guess. Cleaning local records
 - Bring game to initial state
 
-`recordUpdate();`
+`timer {}`
 
-- Updates records in the high-score panel
-- Saves records on local memory
-- Greet the player if he preformed better than his last round
-- Sends a "record broke" message to the congratulations popup
-- Sends a special greeting if the game was never played
-- Sends a special greeting for returning players
+This object is in charge of all the time management of the game.
 
-`matchCards(a, b);`
+- `timer.timeOn()`
+Counts the time, updating the display.
+- `timer.start();`
+Ignites the game time mechanism.
+- `timer.pause()`
+Pause the game timer or resumes it.
+- `timer.reset()`
+Stops and restarts the game timer.
+- `timer.timeFormat(number)`
+  - Turn numbers to *XX:XX* time format.
+  - Built as a clock of "*minutes:seconds*", to imitate real laundry machine clock.
+  - In the game, will display "*seconds:seconds/60"*
+  - In the game time display, each "centisecond" is actually ~17 centiseconds.
 
-- compare two HTML elements
-- In charge of the delay after unsuccessful guess (default: 650)
-
-`explainListen(evt);`
-
-- Checks if an image was hovered and show the symbol explaination
-
-`explainCards{}`
-- `explainCards.show();`
-Toggle the explanation on (pre-game, paused-game, end-game)
-- `explainCards.hide();`
-Remove explanation (in-game)
-
-`cardsReset(delay);`
-
-- Removes all needed CSS classes from the deck
-- Opens the cards pre game for memorizing
-- Closes the cards
-  
-`resetGame();`
-- Build a new deck
-- Reset score & display
-- Reset stars rating
-- Reset timer
-- Remove explanations
-- Reset deck
-
-`playAgain();`
-
-- Showing congratulations Popup
-- Upadtes the "stars" in the popup according the performances
-- Enables to click the buttons - another round or learning the laundry symbols
-  
-`gameOver();`
+`gameOver()`
 - Updates score and record
 - Stops and reset the time
 - Show explanations
@@ -205,11 +156,70 @@ Remove explanation (in-game)
     - Comparing
     - Checking if game is finished
 
-`"control panel"` 
 
-- check for Pause or Reset buttons clicks
-- Reset the high-score if the game was never played
-- `anonymous function` checks for key strokes
+### 3. view{}
+
+`init()`
+
+- Store all needed elements from the HTML
+- Add event listeners for mouse clicks
+- Enables symbols explanations for the cards
+- Add the keyboard shortcuts control
+
+`updateDeck(pairsDeck)`
+
+- Updates the deck that was built by the vm
+
+`updatePanel(time, moves)`
+
+- Update the game score panel.
+
+`updateRecord(time, moves)`
+
+- Formating the game time and update the records 
+
+`starsReset();`
+
+- Reset game rating/stars
+
+`cardsReset(delay);`
+
+- Removes all needed CSS classes from the deck
+- Opens the cards pre game for memorizing
+- Closes the cards
+
+`matchCards(a, b);`
+
+- The core mechanism that check for successful card matching
+- Compare two HTML elements
+- In charge of the delay after unsuccessful guess (default: 650)
+
+`explainListen(evt);`
+
+- Checks if an image was hovered and show the symbol explaination
+
+`explainCards{}`
+- `explainCards.show();`
+Toggle the explanation on (pre-game, paused-game, end-game)
+- `explainCards.hide();`
+Remove explanation (in-game)
+  
+`resetGame();`
+- Build a new deck
+- Reset score & display
+- Reset stars rating
+- Reset timer
+- Remove explanations
+- Reset deck
+
+`controlPanel(evt)`
+
+- Check for Pause or Reset buttons clicks
+- Check for reseting the local storage
+
+`keyboardControl()`
+
+- Checks for key strokes
   
   | Key | Action |
   |:---|:---|
@@ -217,7 +227,36 @@ Remove explanation (in-game)
   | G | Toggle "Bonus Level" / Cheat view |
   | K | Toggle "Popup screen" / Credits view |
 
-`gouranga();`
+### 4. viewPopUp{}
+
+Another view in the MVVM, for the pop up modal at the end of each game
+
+`init()`
+
+- Getting all needed elements from the HTML
+  
+`updateRecords()`
+
+- Updates records in the high-score panel
+- Saves records on local memory
+- Greet the player if he preformed better than his last round
+- Sends a "record broke" message to the congratulations popup
+- Sends a special greeting if the game was never played
+- Sends a special greeting for returning players
+
+`popWin()`
+
+- Show or hided the modal
+  
+`playAgain()`
+
+- Showing congratulations Popup
+- Upadtes the "stars" in the popup according the performances
+- Enables to click the buttons - another round or learning the laundry symbols
+
+### #. iddqd{}
+
+`gouranga()`
 
 - God mode
   - Exposes the deck

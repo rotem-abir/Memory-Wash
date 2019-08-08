@@ -40,6 +40,7 @@ const model = {
         moveRead = parseInt(moveRead);
         [model.record.time, model.record.moves] = [timeRead, moveRead];
         // vm.scoreReset();
+        view.updatePanel(0, 0); /* need to be somewhere else */
       }
       else {
         model.record.time = 5940
