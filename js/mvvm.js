@@ -4,6 +4,7 @@ let speedEnd;
 
 const model = { 
   deckData: [],
+  deckData2: [],
   record: {
     time: 0, // starts as  5940
     moves: 0, // starts as 999
@@ -55,7 +56,34 @@ const model = {
       model.record.time = 5940;
     },
   },
+  getJSON: function(callback) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:8000/data/data.json');
+    //xhr.responseType = 'json';
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        let json = JSON.parse(xhr.responseText);
+        let laundry = json.laundry;
+        callback(null, laundry);
+      }
+      else {
+        callback(`Request error ${xhr.status}`, null);
+      }
+    };
+    xhr.send();
+  },
+  fetchJSON: function(json) {
+    for (let i = 0; i < json.length; i++) {
+      let htmlString = `<img src="${json[i].src}" width="72" alt="${json[i].alt}" title="${json[i].title}"><span class="meaning hide">${json[i].title}</span>`;
+      this.deckData2[i] = htmlString;
+    }
+  },
   init: function() {
+    /*
+    this.getJSON(function(error, json) {
+      model.fetchJSON(json);
+    });
+    */
     // temporary get data
     this.deckData = vm.deck.map(function(card) {
       return card.innerHTML;
@@ -63,6 +91,7 @@ const model = {
     // return '/data/data.json';
   }
 };
+
 
 const vm = {
   init: function() {
