@@ -1,0 +1,51 @@
+{
+  "laundry": [{
+    "id": 1,
+    "src": "img/DoNotWash.jpg",
+    "img_alt": "Do Not Wash",
+    "title": "Do Not Wash"
+    },
+    {
+    "id": 2,
+    "src": "img/DryCleanDoNot.jpg",
+    "img_alt": "Do Not Dry Clean",
+    "title": "Do Not Dry Clean"
+    },
+    {
+    "id": 3,
+    "src": "img/DoNotBleach.jpg",
+    "img_alt": "Do Not Bleach",
+    "title": "Do Not Bleach"
+    },
+    {
+    "id": 4,
+    "src": "img/DryCleanOnly.jpg",
+    "img_alt": "Dry Clean Only",
+    "title": "Dry Clean Only"
+    },
+    {
+    "id": 5,
+    "src": "img/HandWashOnly.jpg",
+    "img_alt": "Hand Wash Only",
+    "title": "Hand Wash Only"
+    },
+    {
+    "id": 6,
+    "src": "img/IronOnMedium.jpg",
+    "img_alt": "Iron On Medium",
+    "title": "Iron On Medium"
+    },
+    {
+    "id": 7,
+    "src": "img/TumbleDryDoNot.jpg",
+    "img_alt": "Do Not Tumble Dry",
+    "title": "Do Not Tumble Dry"
+    },
+    {
+    "id": 8,
+    "src": "img/TumbleDryOnHigh.jpg",
+    "img_alt": "Tumble Dry On High",
+    "title": "Tumble Dry On High"
+    }
+  ]
+}

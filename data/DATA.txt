@@ -1,0 +1,14 @@
+
+/*
+
+
+img/more/Bleach.jpg
+img/more/GentleCycle.jpg
+img/more/IronOnHigh.jpg
+img/more/IronOnLow.jpg
+img/more/NoChlorineBleach.jpg
+img/more/PermanentPress.jpg
+img/more/TumbleDryDelicate.jpg
+img/more/TumbleDryOnLow.jpg
+
+*/
