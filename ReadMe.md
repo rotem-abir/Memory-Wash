@@ -63,8 +63,6 @@ Holds all the data for the game, as the model in the MVVM.
 - `cleanRecord()`
   - deleting all data in the local memory (cache)
 
-- deleting all data in the local memory (cache)
-
 `init()`
 
 - getting the cards data (currently from the HTML, in the future via JSON)
