@@ -52,17 +52,16 @@ Holds all the data for the game, as the model in the MVVM.
 - Holds the move count record
 - Holds the last match rating
 
-`localRecord.saveRecord()`
+`localRecord{}`
 
-- Save the time and moves counters into the local memory
-
-`localRecord.readRecord()`
-
-- Read the records from local memory
-- If not null: Reset the high-score as the game was never played
-- If null, means it's the first game. Keep default values
-
-`localRecord.cleanRecord()`
+- `saveRecord()`
+  - Saves the time and moves counters into the local memory
+- `readRecord()`
+  - Read the records from local memory
+  - If not null: Reset the high-score as the game was never played
+  - If null, means it's the first game. Keep default values
+- `cleanRecord()`
+  - deleting all data in the local memory (cache)
 
 - deleting all data in the local memory (cache)
 
