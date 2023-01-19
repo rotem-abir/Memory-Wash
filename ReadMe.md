@@ -93,10 +93,9 @@ Holds all the data for the game, as the model in the MVVM.
 
 `buildDeck(deck)`
 
-- Shuffle the stock
-- Create a new deck from it
+- Create a new deck from the stock of pairs (as 1234567812345678)
 - Shuffle the new deck
-- Update in the game
+- Update in the game's UI
 
 `scoreReset()`
 
