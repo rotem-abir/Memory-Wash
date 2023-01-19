@@ -97,7 +97,7 @@ Holds all the data for the game, as the model in the MVVM.
 `scoreReset()`
 
 - Resets the game's move counter
-- Reset the game score panel
+- Resets the UI score panel
 
 `checkRating(gameRate)`
 
