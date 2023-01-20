@@ -48,53 +48,52 @@
     "title": "Tumble Dry On High"
     },    
     {
-      "id": 9,
-      "src": "img/more/Bleach.jpg",
-      "img_alt": "Bleach",
-      "title": "Bleach"
-      },
-      {
-      "id": 10,
-      "src": "img/more/GentleCycle.jpg",
-      "img_alt": "Gentle Cycle",
-      "title": "Gentle CycleClean"
-      },
-      {
-      "id": 11,
-      "src": "img/more/IronOnHigh.jpg",
-      "img_alt": "Iron On High",
-      "title": "Iron On High"
-      },
-      {
-      "id": 12,
-      "src": "img/more/IronOnLow.jpg",
-      "img_alt": "Iron On Low",
-      "title": "Iron On Low"
-      },
-      {
-      "id": 13,
-      "src": "img/more/NoChlorineBleach.jpg",
-      "img_alt": "No Chlorine Bleach",
-      "title": "No Chlorine Bleach"
-      },
-      {
-      "id": 14,
-      "src": "img/more/PermanentPress.jpg",
-      "img_alt": "Permanent Press",
-      "title": "Permanent Press"
-      },
-      {
-      "id": 15,
-      "src": "img/more/TumbleDryDelicate.jpg",
-      "img_alt": "Tumble Dry Delicate",
-      "title": "Tumble Dry Delicate"
-      },
-      {
-      "id": 16,
-      "src": "img/more/TumbleDryOnLow.jpg",
-      "img_alt": "Tumble Dry On Low",
-      "title": "Tumble Dry On Low"
-      }
-    ]
+    "id": 9,
+    "src": "img/more/Bleach.jpg",
+    "img_alt": "Bleach",
+    "title": "Bleach"
+    },
+    {
+    "id": 10,
+    "src": "img/more/GentleCycle.jpg",
+    "img_alt": "Gentle Cycle",
+    "title": "Gentle CycleClean"
+    },
+    {
+    "id": 11,
+    "src": "img/more/IronOnHigh.jpg",
+    "img_alt": "Iron On High",
+    "title": "Iron On High"
+    },
+    {
+    "id": 12,
+    "src": "img/more/IronOnLow.jpg",
+    "img_alt": "Iron On Low",
+    "title": "Iron On Low"
+    },
+    {
+    "id": 13,
+    "src": "img/more/NoChlorineBleach.jpg",
+    "img_alt": "No Chlorine Bleach",
+    "title": "No Chlorine Bleach"
+    },
+    {
+    "id": 14,
+    "src": "img/more/PermanentPress.jpg",
+    "img_alt": "Permanent Press",
+    "title": "Permanent Press"
+    },
+    {
+    "id": 15,
+    "src": "img/more/TumbleDryDelicate.jpg",
+    "img_alt": "Tumble Dry Delicate",
+    "title": "Tumble Dry Delicate"
+    },
+    {
+    "id": 16,
+    "src": "img/more/TumbleDryOnLow.jpg",
+    "img_alt": "Tumble Dry On Low",
+    "title": "Tumble Dry On Low"
+    }
   ]
 }
