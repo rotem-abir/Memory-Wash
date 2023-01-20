@@ -95,5 +95,26 @@
     "img_alt": "Tumble Dry On Low",
     "title": "Tumble Dry On Low"
     }
+  ],
+  "greet": [{
+    "rate": "30°C.",
+    "msg": "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"
+    },
+    {
+    "rate": "40°C.",
+    "msg": "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"
+    },
+    {
+    "rate": "50°C.",
+    "msg": "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."
+    },
+    {
+    "rate": "60°C.",
+    "msg": "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."
+    },
+    {
+    "rate": "90°C. Well done!",
+    "msg": "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."
+    }
   ]
 }
