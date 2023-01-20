@@ -46,6 +46,75 @@
     "src": "img/TumbleDryOnHigh.jpg",
     "img_alt": "Tumble Dry On High",
     "title": "Tumble Dry On High"
+    },    
+    {
+    "id": 9,
+    "src": "img/more/Bleach.jpg",
+    "img_alt": "Bleach",
+    "title": "Bleach"
+    },
+    {
+    "id": 10,
+    "src": "img/more/GentleCycle.jpg",
+    "img_alt": "Gentle Cycle",
+    "title": "Gentle CycleClean"
+    },
+    {
+    "id": 11,
+    "src": "img/more/IronOnHigh.jpg",
+    "img_alt": "Iron On High",
+    "title": "Iron On High"
+    },
+    {
+    "id": 12,
+    "src": "img/more/IronOnLow.jpg",
+    "img_alt": "Iron On Low",
+    "title": "Iron On Low"
+    },
+    {
+    "id": 13,
+    "src": "img/more/NoChlorineBleach.jpg",
+    "img_alt": "No Chlorine Bleach",
+    "title": "No Chlorine Bleach"
+    },
+    {
+    "id": 14,
+    "src": "img/more/PermanentPress.jpg",
+    "img_alt": "Permanent Press",
+    "title": "Permanent Press"
+    },
+    {
+    "id": 15,
+    "src": "img/more/TumbleDryDelicate.jpg",
+    "img_alt": "Tumble Dry Delicate",
+    "title": "Tumble Dry Delicate"
+    },
+    {
+    "id": 16,
+    "src": "img/more/TumbleDryOnLow.jpg",
+    "img_alt": "Tumble Dry On Low",
+    "title": "Tumble Dry On Low"
+    }
+  ],
+  "greet": [{
+    "rate": "30°C.",
+    "msg": "This is the recommended setting for a lot of delicate clothes, such as wool and silkgood. Are you delicate?"
+    },
+    {
+    "rate": "40°C.",
+    "msg": "Good for most everday items. Fairly clean, the most common, quiet normal. Are you normal?"
+    },
+    {
+    "rate": "50°C.",
+    "msg": "This wash is suitable for polyester/cotton mixtures and viscose. Oh, and nylon."
+    },
+    {
+    "rate": "60°C.",
+    "msg": "Like underwear, towels and household linen. Some bacterial spores and viruses are resistant to this washing setting."
+    },
+    {
+    "rate": "90°C. Well done!",
+    "msg": "Most washing labels won't recommend such a high temperature. This is the hottest wash program, only suitable for some items."
     }
   ]
 }
