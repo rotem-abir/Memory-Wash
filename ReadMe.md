@@ -86,7 +86,7 @@ Holds all the data for the game, as the model in the MVVM.
 
 `shuffleDeck(array)`
 
-- Takes an array and mixes it's elements.
+- Takes an array and mixes its elements.
 
 `buildDeck(deck)`
 
