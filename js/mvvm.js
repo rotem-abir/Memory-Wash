@@ -56,7 +56,7 @@ const model = {
       model.record.time = 5940;
     },
   },
-  getJSON: function(callback) {         // nned to check: how to fetch JSON
+  getJSON: function(callback) {         // check: how to fetch JSON?
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:8000/data/data.json');
     //xhr.responseType = 'json';
