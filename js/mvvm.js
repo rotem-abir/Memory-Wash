@@ -40,7 +40,6 @@ const model = {
         timeRead = parseInt(timeRead);
         moveRead = parseInt(moveRead);
         [model.record.time, model.record.moves] = [timeRead, moveRead];
-        view.updatePanel(0, 0); /* need to be somewhere else */
       }
       else {
         model.record.time = 5940
@@ -160,6 +159,9 @@ const vm = {
     let bestTime, bestMoves;
     [bestTime, bestMoves] = model.localRecord.readRecord();
     view.updateRecord(bestTime, bestMoves);
+    if (bestTime !== 0) {  // checks if it is not the first game ever
+      view.updatePanel(0, 0); /* moved from the VIEW - now it is correct */
+    }
   },
   deleteRecords: function() {
     model.localRecord.cleanRecord();
