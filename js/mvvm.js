@@ -97,7 +97,6 @@ const model = {
   }
 };
 
-
 const vm = {
   init: function() {
     this.cards = document.getElementsByClassName("card");
