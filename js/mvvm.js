@@ -56,7 +56,7 @@ const model = {
       model.record.time = 5940;
     },
   },
-  getJSON: function(callback) {
+  getJSON: function(callback) {         // nned to check: how to fetch JSON
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:8000/data/data.json');
     //xhr.responseType = 'json';
@@ -74,8 +74,14 @@ const model = {
   },
   fetchJSON: function(json) {
     for (let i = 0; i < json.length; i++) {
+
+      // only for laundry symbols (first JSON element)
       let htmlString = `<img src="${json[i].src}" width="72" alt="${json[i].alt}" title="${json[i].title}"><span class="meaning hide">${json[i].title}</span>`;
       this.deckData2[i] = htmlString;
+
+      // only for greet (second JSON element)
+      let greet = [`${json[i].rate}`, `${json[i].msg}`]
+      this.tempGreet = push.greet; // is this is how you push arr inside arr ?
     }
   },
   init: function() {
