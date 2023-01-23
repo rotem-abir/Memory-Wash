@@ -369,12 +369,7 @@ const view = {
     for (let check of checkClass) {     // check what was clicked on the pannel
       if (check === "pause") {
         vm.timer.pause();
-        if (!vm.timer.running) {       // toggle explanations according to game run/pause
-          view.explainCards.show();
-        }
-        else {
-          view.explainCards.hide();
-        }
+        !vm.timer.running ? view.explainCards.show() : view.explainCards.hide(); // toggle explanations according to game run/pause
       }
       else if (check === "reset"){
         view.resetGame();
