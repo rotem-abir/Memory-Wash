@@ -40,7 +40,6 @@ const model = {
         timeRead = parseInt(timeRead);
         moveRead = parseInt(moveRead);
         [model.record.time, model.record.moves] = [timeRead, moveRead];
-        view.updatePanel(0, 0); /* need to be somewhere else */
       }
       else {
         model.record.time = 5940
@@ -56,7 +55,7 @@ const model = {
       model.record.time = 5940;
     },
   },
-  getJSON: function(callback) {
+  getJSON: function(callback) {         // check: how to fetch JSON?
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:8000/data/data.json');
     //xhr.responseType = 'json';
@@ -74,8 +73,14 @@ const model = {
   },
   fetchJSON: function(json) {
     for (let i = 0; i < json.length; i++) {
+
+      // only for laundry symbols (first JSON element)
       let htmlString = `<img src="${json[i].src}" width="72" alt="${json[i].alt}" title="${json[i].title}"><span class="meaning hide">${json[i].title}</span>`;
       this.deckData2[i] = htmlString;
+
+      // only for greet (second JSON element)
+      let greet = [`${json[i].rate}`, `${json[i].msg}`]
+      this.tempGreet = push.greet; // is this is how you push arr inside arr ?
     }
   },
   init: function() {
@@ -91,7 +96,6 @@ const model = {
     // return '/data/data.json';
   }
 };
-
 
 const vm = {
   init: function() {
@@ -154,6 +158,9 @@ const vm = {
     let bestTime, bestMoves;
     [bestTime, bestMoves] = model.localRecord.readRecord();
     view.updateRecord(bestTime, bestMoves);
+    if (bestTime !== 0) {  // checks if it is not the first game ever
+      view.updatePanel(0, 0); /* moved from the VIEW - now it is correct */
+    }
   },
   deleteRecords: function() {
     model.localRecord.cleanRecord();
@@ -363,12 +370,7 @@ const view = {
     for (let check of checkClass) {     // check what was clicked on the pannel
       if (check === "pause") {
         vm.timer.pause();
-        if (!vm.timer.running) {       // toggle explanations according to game run/pause
-          view.explainCards.show();
-        }
-        else {
-          view.explainCards.hide();
-        }
+        !vm.timer.running ? view.explainCards.show() : view.explainCards.hide(); // toggle explanations according to game run/pause
       }
       else if (check === "reset"){
         view.resetGame();
